@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+build/
+dist/
+portable/
+runtime/
+local-research/
+*.egg-info/
+.venv/
+
+# Keep other remote data private. This one owner-approved raw backup is public.
+backups/
+HarmonyProject*.json
+*.EZHex
+!examples/primary-remote/HarmonyOne-slideshow-observed-20261108-134253.EZHex

@@ -1,0 +1,55 @@
+{
+  "_note": "Physical keys of the Harmony One, transcribed from owner photos in docs/reference. Ids are this project's own names, not Logitech identifiers.",
+  "groups": [
+    {"group": "Top", "buttons": [
+      {"id": "off", "label": "Off", "fixed": true, "note": "Power key, top-left"},
+      {"id": "activities", "label": "Activities"},
+      {"id": "help", "label": "Help"}
+    ]},
+    {"group": "Navigation", "buttons": [
+      {"id": "menu", "label": "Menu"},
+      {"id": "exit", "label": "Exit"},
+      {"id": "info", "label": "Info"},
+      {"id": "guide", "label": "Guide"},
+      {"id": "page_up", "label": "Page up (center rocker)"},
+      {"id": "page_down", "label": "Page down (center rocker)"},
+      {"id": "dpad_up", "label": "Up"},
+      {"id": "dpad_down", "label": "Down"},
+      {"id": "dpad_left", "label": "Left"},
+      {"id": "dpad_right", "label": "Right"},
+      {"id": "ok", "label": "OK"}
+    ]},
+    {"group": "Volume and channel", "buttons": [
+      {"id": "vol_up", "label": "Vol +"},
+      {"id": "vol_down", "label": "Vol -"},
+      {"id": "ch_up", "label": "Ch +"},
+      {"id": "ch_down", "label": "Ch -"},
+      {"id": "mute", "label": "Mute"},
+      {"id": "back", "label": "Back / previous channel (return arrow)"}
+    ]},
+    {"group": "Transport", "buttons": [
+      {"id": "rewind", "label": "Rewind"},
+      {"id": "play", "label": "Play"},
+      {"id": "fast_forward", "label": "Fast forward"},
+      {"id": "replay", "label": "Replay"},
+      {"id": "pause", "label": "Pause"},
+      {"id": "skip", "label": "Skip"},
+      {"id": "record", "label": "Record"},
+      {"id": "stop", "label": "Stop"}
+    ]},
+    {"group": "Number pad", "buttons": [
+      {"id": "digit_1", "label": "1"}, {"id": "digit_2", "label": "2 (abc)"},
+      {"id": "digit_3", "label": "3 (def)"}, {"id": "digit_4", "label": "4 (ghi)"},
+      {"id": "digit_5", "label": "5 (jkl)"}, {"id": "digit_6", "label": "6 (mno)"},
+      {"id": "digit_7", "label": "7 (pqrs)"}, {"id": "digit_8", "label": "8 (tuv)"},
+      {"id": "digit_9", "label": "9 (wxyz)"}, {"id": "clear", "label": "+ / clear"},
+      {"id": "digit_0", "label": "0"}, {"id": "enter", "label": "E / enter"}
+    ]},
+    {"group": "Touch screen hardware", "buttons": [
+      {"id": "soft_left", "label": "Left soft button under LCD"},
+      {"id": "soft_right", "label": "Right soft button under LCD"},
+      {"id": "screen_prev", "label": "Left page arrow (touch)"},
+      {"id": "screen_next", "label": "Right page arrow (touch)"}
+    ]}
+  ]
+}

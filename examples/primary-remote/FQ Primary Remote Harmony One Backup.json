@@ -1,0 +1,2371 @@
+{
+  "formatVersion": 1,
+  "devices": [
+    {
+      "id": "a5cc39e98dcc452f953f1dde94d74428",
+      "name": "Samsung TV",
+      "brand": "",
+      "category": "",
+      "commands": [
+        {
+          "name": "Code 0",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 0"
+        },
+        {
+          "name": "Code 1",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 1"
+        },
+        {
+          "name": "Code 2",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 2"
+        },
+        {
+          "name": "Code 3",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 3"
+        },
+        {
+          "name": "Code 4",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 4"
+        },
+        {
+          "name": "Code 5",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 5"
+        },
+        {
+          "name": "Code 6",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 6"
+        },
+        {
+          "name": "Code 7",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 7"
+        },
+        {
+          "name": "Code 8",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 8"
+        },
+        {
+          "name": "Code 9",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 9"
+        },
+        {
+          "name": "Code 10",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 10"
+        },
+        {
+          "name": "Code 11",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 11"
+        },
+        {
+          "name": "Code 12",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 12"
+        },
+        {
+          "name": "Code 13",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 13"
+        },
+        {
+          "name": "Code 14",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 14"
+        },
+        {
+          "name": "Code 15",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 15"
+        },
+        {
+          "name": "Code 16",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 16"
+        },
+        {
+          "name": "Code 17",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 17"
+        },
+        {
+          "name": "Code 18",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 18"
+        },
+        {
+          "name": "Code 19",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 19"
+        },
+        {
+          "name": "Code 20",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 20"
+        },
+        {
+          "name": "Code 21",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 21"
+        },
+        {
+          "name": "Code 22",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 22"
+        },
+        {
+          "name": "Code 23",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 23"
+        },
+        {
+          "name": "Code 24",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 24"
+        },
+        {
+          "name": "Code 25",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 25"
+        },
+        {
+          "name": "Code 26",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 26"
+        },
+        {
+          "name": "Code 27",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 27"
+        },
+        {
+          "name": "Code 28",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 28"
+        },
+        {
+          "name": "Code 29",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 29"
+        },
+        {
+          "name": "Code 30",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 30"
+        },
+        {
+          "name": "Code 31",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 31"
+        },
+        {
+          "name": "Code 32",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 32"
+        },
+        {
+          "name": "Code 33",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 33"
+        },
+        {
+          "name": "Code 34",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 34"
+        },
+        {
+          "name": "Code 35",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 35"
+        },
+        {
+          "name": "Code 36",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 36"
+        },
+        {
+          "name": "Code 37",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 37"
+        },
+        {
+          "name": "Code 38",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 38"
+        },
+        {
+          "name": "Code 39",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 39"
+        },
+        {
+          "name": "Code 40",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 40"
+        },
+        {
+          "name": "Code 41",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 41"
+        },
+        {
+          "name": "Code 42",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 42"
+        },
+        {
+          "name": "Code 43",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 43"
+        },
+        {
+          "name": "Code 44",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 44"
+        },
+        {
+          "name": "Code 45",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 45"
+        },
+        {
+          "name": "Code 46",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 46"
+        },
+        {
+          "name": "Code 47",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 47"
+        },
+        {
+          "name": "Code 48",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 48"
+        },
+        {
+          "name": "Code 49",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 49"
+        },
+        {
+          "name": "Code 50",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 50"
+        },
+        {
+          "name": "Code 51",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 51"
+        },
+        {
+          "name": "Code 52",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 52"
+        },
+        {
+          "name": "Code 53",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 53"
+        },
+        {
+          "name": "Code 54",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 54"
+        },
+        {
+          "name": "Code 55",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 55"
+        },
+        {
+          "name": "Code 56",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 56"
+        },
+        {
+          "name": "Code 57",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 57"
+        },
+        {
+          "name": "Code 58",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 58"
+        },
+        {
+          "name": "Code 59",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 59"
+        },
+        {
+          "name": "Code 60",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 60"
+        },
+        {
+          "name": "Code 61",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 61"
+        },
+        {
+          "name": "Code 62",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 62"
+        },
+        {
+          "name": "Code 63",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 63"
+        },
+        {
+          "name": "Code 64",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 64"
+        },
+        {
+          "name": "Code 65",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 65"
+        },
+        {
+          "name": "Code 66",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 66"
+        },
+        {
+          "name": "Code 67",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 67"
+        },
+        {
+          "name": "Code 68",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 68"
+        },
+        {
+          "name": "Code 69",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 69"
+        },
+        {
+          "name": "Code 70",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 70"
+        },
+        {
+          "name": "Code 71",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 71"
+        },
+        {
+          "name": "Code 72",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 72"
+        },
+        {
+          "name": "Code 73",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 73"
+        },
+        {
+          "name": "Code 74",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 74"
+        },
+        {
+          "name": "Code 75",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 75"
+        },
+        {
+          "name": "Code 76",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 76"
+        },
+        {
+          "name": "Code 77",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 77"
+        },
+        {
+          "name": "Code 78",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 78"
+        },
+        {
+          "name": "Code 79",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 79"
+        },
+        {
+          "name": "Code 80",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 80"
+        },
+        {
+          "name": "Code 81",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 81"
+        },
+        {
+          "name": "Code 82",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 82"
+        },
+        {
+          "name": "Code 83",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 83"
+        },
+        {
+          "name": "Code 84",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 84"
+        },
+        {
+          "name": "Code 85",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 85"
+        },
+        {
+          "name": "Code 86",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 86"
+        },
+        {
+          "name": "Code 87",
+          "protocol": "raw-ir 37900 Hz",
+          "address": "group 0",
+          "command": "record 87"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "4d58cacb2deb414296ad96f8c6ce5515",
+      "name": "Sharp TV",
+      "brand": "",
+      "category": "",
+      "commands": [
+        {
+          "name": "Code 0",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 0"
+        },
+        {
+          "name": "Code 1",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 1"
+        },
+        {
+          "name": "Code 2",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 2"
+        },
+        {
+          "name": "Code 3",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 3"
+        },
+        {
+          "name": "Code 4",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 4"
+        },
+        {
+          "name": "Code 5",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 5"
+        },
+        {
+          "name": "Code 6",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 6"
+        },
+        {
+          "name": "Code 7",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 7"
+        },
+        {
+          "name": "Code 8",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 8"
+        },
+        {
+          "name": "Code 9",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 9"
+        },
+        {
+          "name": "Code 10",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 10"
+        },
+        {
+          "name": "Code 11",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 11"
+        },
+        {
+          "name": "Code 12",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 12"
+        },
+        {
+          "name": "Code 13",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 13"
+        },
+        {
+          "name": "Code 14",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 14"
+        },
+        {
+          "name": "Code 15",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 15"
+        },
+        {
+          "name": "Code 16",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 16"
+        },
+        {
+          "name": "Code 17",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 17"
+        },
+        {
+          "name": "Code 18",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 18"
+        },
+        {
+          "name": "Code 19",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 19"
+        },
+        {
+          "name": "Code 20",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 20"
+        },
+        {
+          "name": "Code 21",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 21"
+        },
+        {
+          "name": "Code 22",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 22"
+        },
+        {
+          "name": "Code 23",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 23"
+        },
+        {
+          "name": "Code 24",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 24"
+        },
+        {
+          "name": "Code 25",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 25"
+        },
+        {
+          "name": "Code 26",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 26"
+        },
+        {
+          "name": "Code 27",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 27"
+        },
+        {
+          "name": "Code 28",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 28"
+        },
+        {
+          "name": "Code 29",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 29"
+        },
+        {
+          "name": "Code 30",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 30"
+        },
+        {
+          "name": "Code 31",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 31"
+        },
+        {
+          "name": "Code 32",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 32"
+        },
+        {
+          "name": "Code 33",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 33"
+        },
+        {
+          "name": "Code 34",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 34"
+        },
+        {
+          "name": "Code 35",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 35"
+        },
+        {
+          "name": "Code 36",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 36"
+        },
+        {
+          "name": "Code 37",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 37"
+        },
+        {
+          "name": "Code 38",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 38"
+        },
+        {
+          "name": "Code 39",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 39"
+        },
+        {
+          "name": "Code 40",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 40"
+        },
+        {
+          "name": "Code 41",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 41"
+        },
+        {
+          "name": "Code 42",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 42"
+        },
+        {
+          "name": "Code 43",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 43"
+        },
+        {
+          "name": "Code 44",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 44"
+        },
+        {
+          "name": "Code 45",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 45"
+        },
+        {
+          "name": "Code 46",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 46"
+        },
+        {
+          "name": "Code 47",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 47"
+        },
+        {
+          "name": "Code 48",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 48"
+        },
+        {
+          "name": "Code 49",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 49"
+        },
+        {
+          "name": "Code 50",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 50"
+        },
+        {
+          "name": "Code 51",
+          "protocol": "raw-ir 39474 Hz",
+          "address": "group 1",
+          "command": "record 51"
+        },
+        {
+          "name": "Code 52",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 52"
+        },
+        {
+          "name": "Code 53",
+          "protocol": "raw-ir 39474 Hz",
+          "address": "group 1",
+          "command": "record 53"
+        },
+        {
+          "name": "Code 54",
+          "protocol": "raw-ir 39474 Hz",
+          "address": "group 1",
+          "command": "record 54"
+        },
+        {
+          "name": "Code 55",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 55"
+        },
+        {
+          "name": "Code 56",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 56"
+        },
+        {
+          "name": "Code 57",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 57"
+        },
+        {
+          "name": "Code 58",
+          "protocol": "raw-ir 39474 Hz",
+          "address": "group 1",
+          "command": "record 58"
+        },
+        {
+          "name": "Code 59",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 59"
+        },
+        {
+          "name": "Code 60",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 60"
+        },
+        {
+          "name": "Code 61",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 61"
+        },
+        {
+          "name": "Code 62",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 62"
+        },
+        {
+          "name": "Code 63",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 63"
+        },
+        {
+          "name": "Code 64",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 64"
+        },
+        {
+          "name": "Code 65",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 65"
+        },
+        {
+          "name": "Code 66",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 66"
+        },
+        {
+          "name": "Code 67",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 67"
+        },
+        {
+          "name": "Code 68",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 68"
+        },
+        {
+          "name": "Code 69",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 69"
+        },
+        {
+          "name": "Code 70",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 70"
+        },
+        {
+          "name": "Code 71",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 71"
+        },
+        {
+          "name": "Code 72",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 72"
+        },
+        {
+          "name": "Code 73",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 73"
+        },
+        {
+          "name": "Code 74",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 74"
+        },
+        {
+          "name": "Code 75",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 75"
+        },
+        {
+          "name": "Code 76",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 76"
+        },
+        {
+          "name": "Code 77",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 77"
+        },
+        {
+          "name": "Code 78",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 78"
+        },
+        {
+          "name": "Code 79",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 79"
+        },
+        {
+          "name": "Code 80",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 80"
+        },
+        {
+          "name": "Code 81",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 81"
+        },
+        {
+          "name": "Code 82",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 82"
+        },
+        {
+          "name": "Code 83",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 83"
+        },
+        {
+          "name": "Code 84",
+          "protocol": "raw-ir 39000 Hz",
+          "address": "group 1",
+          "command": "record 84"
+        },
+        {
+          "name": "Code 85",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 85"
+        },
+        {
+          "name": "Code 86",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 86"
+        },
+        {
+          "name": "Code 87",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 87"
+        },
+        {
+          "name": "Code 88",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 88"
+        },
+        {
+          "name": "Code 89",
+          "protocol": "raw-ir 36001 Hz",
+          "address": "group 1",
+          "command": "record 89"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "5d3c69ec939945888fd14416eb182a7f",
+      "name": "Pioneer Laserdisc Player",
+      "brand": "",
+      "category": "",
+      "commands": [
+        {
+          "name": "Code 0",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 0"
+        },
+        {
+          "name": "Code 1",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 1"
+        },
+        {
+          "name": "Code 2",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 2"
+        },
+        {
+          "name": "Code 3",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 3"
+        },
+        {
+          "name": "Code 4",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 4"
+        },
+        {
+          "name": "Code 5",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 5"
+        },
+        {
+          "name": "Code 6",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 6"
+        },
+        {
+          "name": "Code 7",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 7"
+        },
+        {
+          "name": "Code 8",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 8"
+        },
+        {
+          "name": "Code 9",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 9"
+        },
+        {
+          "name": "Code 10",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 10"
+        },
+        {
+          "name": "Code 11",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 11"
+        },
+        {
+          "name": "Code 12",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 12"
+        },
+        {
+          "name": "Code 13",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 13"
+        },
+        {
+          "name": "Code 14",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 14"
+        },
+        {
+          "name": "Code 15",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 15"
+        },
+        {
+          "name": "Code 16",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 16"
+        },
+        {
+          "name": "Code 17",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 17"
+        },
+        {
+          "name": "Code 18",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 18"
+        },
+        {
+          "name": "Code 19",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 19"
+        },
+        {
+          "name": "Code 20",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 20"
+        },
+        {
+          "name": "Code 21",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 21"
+        },
+        {
+          "name": "Code 22",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 22"
+        },
+        {
+          "name": "Code 23",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 23"
+        },
+        {
+          "name": "Code 24",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 24"
+        },
+        {
+          "name": "Code 25",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 25"
+        },
+        {
+          "name": "Code 26",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 26"
+        },
+        {
+          "name": "Code 27",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 27"
+        },
+        {
+          "name": "Code 28",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 28"
+        },
+        {
+          "name": "Code 29",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 29"
+        },
+        {
+          "name": "Code 30",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 30"
+        },
+        {
+          "name": "Code 31",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 31"
+        },
+        {
+          "name": "Code 32",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 32"
+        },
+        {
+          "name": "Code 33",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 33"
+        },
+        {
+          "name": "Code 34",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 34"
+        },
+        {
+          "name": "Code 35",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 35"
+        },
+        {
+          "name": "Code 36",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 36"
+        },
+        {
+          "name": "Code 37",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 37"
+        },
+        {
+          "name": "Code 38",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 38"
+        },
+        {
+          "name": "Code 39",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 39"
+        },
+        {
+          "name": "Code 40",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 40"
+        },
+        {
+          "name": "Code 41",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 41"
+        },
+        {
+          "name": "Code 42",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 42"
+        },
+        {
+          "name": "Code 43",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 43"
+        },
+        {
+          "name": "Code 44",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 2",
+          "command": "record 44"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "922732630c2a4db79ca1f1ff94505bab",
+      "name": "Sony DVD",
+      "brand": "",
+      "category": "",
+      "commands": [
+        {
+          "name": "Code 0",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 0"
+        },
+        {
+          "name": "Code 1",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 1"
+        },
+        {
+          "name": "Code 2",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 2"
+        },
+        {
+          "name": "Code 3",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 3"
+        },
+        {
+          "name": "Code 4",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 4"
+        },
+        {
+          "name": "Code 5",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 5"
+        },
+        {
+          "name": "Code 6",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 6"
+        },
+        {
+          "name": "Code 7",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 7"
+        },
+        {
+          "name": "Code 8",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 8"
+        },
+        {
+          "name": "Code 9",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 9"
+        },
+        {
+          "name": "Code 10",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 10"
+        },
+        {
+          "name": "Code 11",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 11"
+        },
+        {
+          "name": "Code 12",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 12"
+        },
+        {
+          "name": "Code 13",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 13"
+        },
+        {
+          "name": "Code 14",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 14"
+        },
+        {
+          "name": "Code 15",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 15"
+        },
+        {
+          "name": "Code 16",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 16"
+        },
+        {
+          "name": "Code 17",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 17"
+        },
+        {
+          "name": "Code 18",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 18"
+        },
+        {
+          "name": "Code 19",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 19"
+        },
+        {
+          "name": "Code 20",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 20"
+        },
+        {
+          "name": "Code 21",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 21"
+        },
+        {
+          "name": "Code 22",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 22"
+        },
+        {
+          "name": "Code 23",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 23"
+        },
+        {
+          "name": "Code 24",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 24"
+        },
+        {
+          "name": "Code 25",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 25"
+        },
+        {
+          "name": "Code 26",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 26"
+        },
+        {
+          "name": "Code 27",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 27"
+        },
+        {
+          "name": "Code 28",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 28"
+        },
+        {
+          "name": "Code 29",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 29"
+        },
+        {
+          "name": "Code 30",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 30"
+        },
+        {
+          "name": "Code 31",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 31"
+        },
+        {
+          "name": "Code 32",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 32"
+        },
+        {
+          "name": "Code 33",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 33"
+        },
+        {
+          "name": "Code 34",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 34"
+        },
+        {
+          "name": "Code 35",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 35"
+        },
+        {
+          "name": "Code 36",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 36"
+        },
+        {
+          "name": "Code 37",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 37"
+        },
+        {
+          "name": "Code 38",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 38"
+        },
+        {
+          "name": "Code 39",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 39"
+        },
+        {
+          "name": "Code 40",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 40"
+        },
+        {
+          "name": "Code 41",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 41"
+        },
+        {
+          "name": "Code 42",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 42"
+        },
+        {
+          "name": "Code 43",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 43"
+        },
+        {
+          "name": "Code 44",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 44"
+        },
+        {
+          "name": "Code 45",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 45"
+        },
+        {
+          "name": "Code 46",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 3",
+          "command": "record 46"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "e91584b73f914b9180f4775c4ae85312",
+      "name": "Sony AV Receiver",
+      "brand": "",
+      "category": "",
+      "commands": [
+        {
+          "name": "Code 0",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 0"
+        },
+        {
+          "name": "Code 1",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 1"
+        },
+        {
+          "name": "Code 2",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 2"
+        },
+        {
+          "name": "Code 3",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 3"
+        },
+        {
+          "name": "Code 4",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 4"
+        },
+        {
+          "name": "Code 5",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 5"
+        },
+        {
+          "name": "Code 6",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 6"
+        },
+        {
+          "name": "Code 7",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 7"
+        },
+        {
+          "name": "Code 8",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 8"
+        },
+        {
+          "name": "Code 9",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 9"
+        },
+        {
+          "name": "Code 10",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 10"
+        },
+        {
+          "name": "Code 11",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 11"
+        },
+        {
+          "name": "Code 12",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 12"
+        },
+        {
+          "name": "Code 13",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 13"
+        },
+        {
+          "name": "Code 14",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 14"
+        },
+        {
+          "name": "Code 15",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 15"
+        },
+        {
+          "name": "Code 16",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 16"
+        },
+        {
+          "name": "Code 17",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 17"
+        },
+        {
+          "name": "Code 18",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 18"
+        },
+        {
+          "name": "Code 19",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 19"
+        },
+        {
+          "name": "Code 20",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 20"
+        },
+        {
+          "name": "Code 21",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 21"
+        },
+        {
+          "name": "Code 22",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 22"
+        },
+        {
+          "name": "Code 23",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 23"
+        },
+        {
+          "name": "Code 24",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 24"
+        },
+        {
+          "name": "Code 25",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 25"
+        },
+        {
+          "name": "Code 26",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 26"
+        },
+        {
+          "name": "Code 27",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 27"
+        },
+        {
+          "name": "Code 28",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 28"
+        },
+        {
+          "name": "Code 29",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 29"
+        },
+        {
+          "name": "Code 30",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 30"
+        },
+        {
+          "name": "Code 31",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 31"
+        },
+        {
+          "name": "Code 32",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 32"
+        },
+        {
+          "name": "Code 33",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 33"
+        },
+        {
+          "name": "Code 34",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 34"
+        },
+        {
+          "name": "Code 35",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 35"
+        },
+        {
+          "name": "Code 36",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 36"
+        },
+        {
+          "name": "Code 37",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 37"
+        },
+        {
+          "name": "Code 38",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 38"
+        },
+        {
+          "name": "Code 39",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 39"
+        },
+        {
+          "name": "Code 40",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 40"
+        },
+        {
+          "name": "Code 41",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 41"
+        },
+        {
+          "name": "Code 42",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 42"
+        },
+        {
+          "name": "Code 43",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 43"
+        },
+        {
+          "name": "Code 44",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 44"
+        },
+        {
+          "name": "Code 45",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 45"
+        },
+        {
+          "name": "Code 46",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 46"
+        },
+        {
+          "name": "Code 47",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 47"
+        },
+        {
+          "name": "Code 48",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 48"
+        },
+        {
+          "name": "Code 49",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 49"
+        },
+        {
+          "name": "Code 50",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 50"
+        },
+        {
+          "name": "Code 51",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 51"
+        },
+        {
+          "name": "Code 52",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 52"
+        },
+        {
+          "name": "Code 53",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 53"
+        },
+        {
+          "name": "Code 54",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 54"
+        },
+        {
+          "name": "Code 55",
+          "protocol": "raw-ir 40000 Hz",
+          "address": "group 4",
+          "command": "record 55"
+        }
+      ],
+      "source": "remote"
+    }
+  ],
+  "activities": [
+    {
+      "id": "8ea526cd7e6d472d875e9b03f8b3fda0",
+      "name": "FQPC",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Input setting 1"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Input setting 1"
+        },
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "23c64d9547c04b548af1e820882eb42e",
+      "name": "Record Player",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Input setting 3"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "ce1f9440451c485895d0760a7b2a7348",
+      "name": "Left Port - 16:9",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Input setting 2"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Input setting 1"
+        },
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "37956f7e235d46029023729d6b604cae",
+      "name": "Left Port - 4:3",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Input setting 2"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Input setting 2"
+        },
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "c68aede481c04ee48bc1bcbf0da76aad",
+      "name": "Right Port - 4:3",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Input setting 0"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Input setting 2"
+        },
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "7775b8e956ac4547911c68407dfa9441",
+      "name": "FQS1 (PC)",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Input setting 5"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Input setting 1"
+        },
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "c592f1c6181943598aa607e7527aa84a",
+      "name": "Right Port - 16:9",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Input setting 0"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Input setting 1"
+        },
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "c5387473f1664f2ca91d61d028576f9d",
+      "name": "CRT AV",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    },
+    {
+      "id": "d3f0fb48af9d4179b815642a0000f1c5",
+      "name": "FQS1 (PC)",
+      "steps": [
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Power on"
+        },
+        {
+          "type": "state",
+          "device_id": "e91584b73f914b9180f4775c4ae85312",
+          "label": "Input setting 5"
+        },
+        {
+          "type": "state",
+          "device_id": "a5cc39e98dcc452f953f1dde94d74428",
+          "label": "Input setting 1"
+        },
+        {
+          "type": "state",
+          "device_id": "4d58cacb2deb414296ad96f8c6ce5515",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "5d3c69ec939945888fd14416eb182a7f",
+          "label": "Power off"
+        },
+        {
+          "type": "state",
+          "device_id": "922732630c2a4db79ca1f1ff94505bab",
+          "label": "Power off"
+        }
+      ],
+      "source": "remote"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "features": [
+    {
+      "id": "offline-projects",
+      "name": "Offline Remote Data editing",
+      "area": "Remote Data",
+      "level": "Fully functional",
+      "details": "Create, open, edit, and save local Remote Data JSON files without a runtime network dependency."
+    },
+    {
+      "id": "device-library",
+      "name": "Device library and editor",
+      "area": "Devices",
+      "level": "Fully functional",
+      "details": "Browse devices by category and brand; add, edit, and remove local devices and parsed command data."
+    },
+    {
+      "id": "flipper-ir-import",
+      "name": "Flipper IR file import",
+      "area": "Devices",
+      "level": "Partially functional",
+      "details": "Imports supported parsed IR signals only. Raw, malformed, or unsupported records are rejected."
+    },
+    {
+      "id": "activity-builder",
+      "name": "Activity sequence builder",
+      "area": "Activities",
+      "level": "Partially functional",
+      "details": "Build ordered local command sequences; select participating devices, channel/volume control devices, and target inputs. Remote Data edits are not yet transferable to the remote."
+    },
+    {
+      "id": "activity-icons",
+      "name": "Activity icons",
+      "area": "Activities",
+      "level": "Partially functional",
+      "details": "Built-in and custom PNG/GIF icon previews are stored in local Remote Data. Existing remote icons cannot yet be decoded and icon edits cannot be uploaded."
+    },
+    {
+      "id": "starter-ir-catalog",
+      "name": "Bundled IR catalog",
+      "area": "Devices",
+      "level": "Partially functional",
+      "details": "Includes 82 curated device profiles with 1,956 parsed commands, added on demand through 'Add from IR library...' on the Devices tab. New Remote Data starts blank. It is not a complete database, and codes are not verified for every model."
+    },
+    {
+      "id": "usb-discovery",
+      "name": "Logitech USB device discovery",
+      "area": "USB",
+      "level": "Partially functional",
+      "details": "Windows discovery lists connected Logitech USB/HID devices for information. Discovery does not enable remote programming."
+    },
+    {
+      "id": "harmony-one-backup",
+      "name": "Harmony One configuration backup",
+      "area": "USB",
+      "level": "Read-only",
+      "details": "Reads and validates a Harmony One flash configuration before saving a bare-container backup. No remote data is written."
+    },
+    {
+      "id": "remote-backup-import",
+      "name": "Import a remote backup into the editor",
+      "area": "Remote transfer",
+      "level": "Partially functional",
+      "details": "Reads a backup and imports decoded devices, IR records, activity names, and state steps. The editor supports local participant, role, input, and sequence edits; button-map editing and configuration generation are not yet available."
+    },
+    {
+      "id": "remote-object-export",
+      "name": "Export device and activity objects",
+      "area": "Remote backup",
+      "level": "Partially functional",
+      "details": "Exports separate JSON objects with recovered IR timings, activity steps and source key maps. Individual devices and activities can be selected, including straight from a fresh USB backup, and files are named after the objects. Decoding is incomplete and transfer to another remote is not yet implemented."
+    },
+    {
+      "id": "backup-browser",
+      "name": "Browse devices and activities inside a backup",
+      "area": "Remote backup",
+      "level": "Read-only",
+      "details": "The Backup tab takes a fresh USB backup or opens a saved .EZHex file and lists every decoded device and activity. Selecting an item shows its IR record summary, state variables, participating devices, decoded steps and button-binding counts, with known decoding limitations. Read-only; individual objects can be exported from the same view."
+    },
+    {
+      "id": "project-object-packages",
+      "name": "Move individual objects between local Remote Data files",
+      "area": "Remote Data editing",
+      "level": "Partially functional",
+      "details": "Export and import one Remote Data device or activity at a time. Activity packages include dependent devices and remap local IDs. Packages are not upload-ready; remote-decoded commands may be placeholders."
+    },
+    {
+      "id": "reorder-and-delays",
+      "name": "Reorder devices/activities and add delay steps",
+      "area": "Editor",
+      "level": "Fully functional",
+      "details": "Order lists show remote pages (3 per page). Activities show Start and Done rows and accept delays of 100-10000 ms. Order is saved in local Remote Data only."
+    },
+    {
+      "id": "read-and-preview-write",
+      "name": "Read remote, preview and gate writes",
+      "area": "Remote",
+      "level": "Partially functional",
+      "details": "Read from connected remote saves a timestamped backup and loads decoded data. The write preview can prepare an offline candidate for a single same-length activity rename; general Remote Data uploads remain blocked. Separate fixed-size writes have been verified on the spare remote."
+    },
+    {
+      "id": "remote-programming",
+      "name": "Program a remote from this app",
+      "area": "Remote transfer",
+      "level": "Partially functional",
+      "details": "Fixed-size slideshow replacements and one same-length activity-name edit have been written and read-back verified on the spare Style A remote. General device/activity Remote Data changes cannot be uploaded because configuration generation and relocation are not implemented."
+    },
+    {
+      "id": "experimental-activity-upload",
+      "name": "Add an activity using existing remote devices",
+      "area": "Remote transfer",
+      "level": "Partially functional",
+      "details": "Experimental GUI workflow reads a fresh backup, composes locally using attributed MIT code, checks preservation and offers acknowledgement-gated USB upload. Test TV upload and screen repair were read-back verified; the owner confirmed the corrected device-button panel and original FQS1 activity. Startup title still shows the template name. Requires Node.js; extra startup sends/delays are not copied, and the template working screen is shared."
+    },
+    {
+      "id": "remote-config-generation",
+      "name": "Generate remote-specific configurations",
+      "area": "Remote transfer",
+      "level": "Not implemented",
+      "details": "The app cannot generate the remote-specific configuration blobs needed to transfer edited devices and activities."
+    }
+  ]
+}

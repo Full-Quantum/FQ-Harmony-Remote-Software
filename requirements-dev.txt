@@ -1,0 +1,4 @@
+# Development-only tools; the application itself needs only requirements.txt.
+-r requirements.txt
+pillow>=10        # tools/glyph_sheets.py glyph sheet rendering
+pyinstaller>=6    # rebuilding dist/HarmonyOne.exe (see START-HERE.md)

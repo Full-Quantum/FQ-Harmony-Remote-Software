@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fq-logitech-harmony-one"
+version = "0.1.2"
+description = "Clean-room desktop software for managing a Logitech Harmony One remote over USB"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = ["hidapi>=0.14,<0.16"]
+
+[project.scripts]
+harmony-one = "harmony_one.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+harmony_one = ["data/*.json"]

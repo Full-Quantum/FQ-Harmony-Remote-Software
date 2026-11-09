@@ -1,0 +1,17 @@
+Experimental local activity composer
+
+Bundled from dannybloe/harmony-explorations
+https://github.com/dannybloe/harmony-explorations
+Commit: c016f5b51866bb989e8815c081fb45e1e72d2e95
+Copyright 2026 Danny Bloemendaal. MIT license: LICENSE.
+
+Includes opentype.js 2.0.0. MIT license: opentype-LICENSE.
+Oxanium fonts retain their SIL Open Font License: fonts/Oxanium/OFL.txt.
+
+Built with esbuild 0.25.12 from tools/activity-composer-entry.ts using the
+upstream checkout as the import root. This project's wrapper maps a stable
+activity/key-map identity to the upstream menu label before invoking the
+unchanged upstream CLI. The fonts retain their upstream layout.
+The wrapper retargets the new activity's startup-completion instruction and
+its independently owned return screen program to the template working mode.
+No Logitech catalogue archive or personal remote backups are bundled.
