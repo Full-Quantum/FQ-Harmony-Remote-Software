@@ -54,7 +54,7 @@
       "name": "Harmony One configuration backup",
       "area": "USB",
       "level": "Read-only",
-      "details": "Reads and validates a Harmony One flash configuration before saving a bare-container backup. No remote data is written."
+      "details": "Reads and validates the connected Harmony One's complete raw configuration and saves it as an .EZHex snapshot. This is separate from the editable Remote Data JSON and does not write to the source remote."
     },
     {
       "id": "remote-backup-import",
@@ -74,8 +74,22 @@
       "id": "backup-browser",
       "name": "Browse devices and activities inside a backup",
       "area": "Remote backup",
-      "level": "Read-only",
-      "details": "The Backup tab takes a fresh USB backup or opens a saved .EZHex file and lists every decoded device and activity. Selecting an item shows its IR record summary, state variables, participating devices, decoded steps and button-binding counts, with known decoding limitations. Read-only; individual objects can be exported from the same view."
+      "level": "Partially functional",
+      "details": "Browse Contents takes a fresh USB snapshot or opens a saved .EZHex file, lists decoded devices and activities, and imports all decoded items into a separate Remote Data project with one action. Icon edits and display-style candidates start from the loaded backup; the complete original is protected from overwrite. General Remote Data device/activity edits remain separate and are not compiled into an .EZHex."
+    },
+    {
+      "id": "remote-menu-icons",
+      "name": "Edit individual remote menu icons",
+      "area": "Remote backup",
+      "level": "Partially functional",
+      "details": "Edit one specific device/activity menu-page occurrence using a 51 x 48 image already in the backup or a PNG/GIF import. Candidate checks preserve the other recognized icons, menu backgrounds, buttons, and decoded remote data. Candidates must be saved as a new .EZHex file before transfer; hardware appearance and cross-remote compatibility are unverified."
+    },
+    {
+      "id": "configuration-memory-map",
+      "name": "Visual configuration memory map",
+      "area": "Remote backup",
+      "level": "Partially functional",
+      "details": "The Memory Map tab displays the complete saved configuration as header, raw-numbered data sections, and checksum/end-marker blocks, with proportional sizes, file offsets, flash addresses, and a short hex preview. Section contents are not all semantically decoded; the page is read-only and can open a backup without USB."
     },
     {
       "id": "project-object-packages",
@@ -96,14 +110,35 @@
       "name": "Read remote, preview and gate writes",
       "area": "Remote",
       "level": "Partially functional",
-      "details": "Read from connected remote saves a timestamped backup and loads decoded data. The write preview can prepare an offline candidate for a single same-length activity rename; general Remote Data uploads remain blocked. Separate fixed-size writes have been verified on the spare remote."
+      "details": "Scanning a remote into the local editor first asks the user to confirm it is connected and charged, saves a timestamped raw .EZHex backup, and imports decoded data into a separate Remote Data project copy. Opening a loaded backup from Browse Contents does the same without another USB scan. General local JSON edits are not compiled into .EZHex or uploaded."
+    },
+    {
+      "id": "screen-style-transfer",
+      "name": "Activities and Devices display styles",
+      "area": "Display",
+      "level": "Partially functional",
+      "details": "Transfers Activities and Devices list backgrounds and row-button artwork from the included Newer and Older styles or a locally saved custom style created from a backup. Every recognized row icon is replaced with the same generic list icon so no per-item icon artwork remains mixed with the selected style. Labels, device/activity data, and order are preserved. In-app previews show the generic icon. Custom styles are stored locally for reuse. An acknowledgement-gated USB writer requires a fresh exact-match backup and verifies the full configuration after writing. Display-style writes have not yet been hardware-validated."
+    },
+    {
+      "id": "clock-sync",
+      "name": "Set the Harmony One clock",
+      "area": "Remote",
+      "level": "Partially functional",
+      "details": "The Clock tab can save a clock candidate based on the currently loaded .EZHex backup without touching USB, or write the clock using an acknowledgement-gated fresh exact-live-baseline USB workflow. Clock-specific hardware behavior and resulting accuracy have not yet been verified."
+    },
+    {
+      "id": "whole-save-restore",
+      "name": "Restore a complete Harmony One save",
+      "area": "Remote transfer",
+      "level": "Partially functional",
+      "details": "The Transfer Remote tab can scan a source remote over USB and save its raw .EZHex configuration, then direct the user to disconnect it and connect a different destination remote. It saves a fresh destination backup, checks architecture and screen skin, requires explicit charged-target/full-replacement confirmations, and verifies the write. It replaces the destination's complete configuration and does not apply editable Remote Data JSON. Firmware and cross-remote compatibility are not hardware-validated."
     },
     {
       "id": "remote-programming",
       "name": "Program a remote from this app",
       "area": "Remote transfer",
       "level": "Partially functional",
-      "details": "Fixed-size slideshow replacements and one same-length activity-name edit have been written and read-back verified on the spare Style A remote. General device/activity Remote Data changes cannot be uploaded because configuration generation and relocation are not implemented."
+      "details": "Fixed-size slideshow replacements and one same-length activity-name edit have been written and read-back verified on the spare Style A remote. A complete existing save can be restored to a matching architecture/skin target, but edited Remote Data cannot be converted into a remote configuration because general configuration generation and relocation are not implemented."
     },
     {
       "id": "experimental-activity-upload",

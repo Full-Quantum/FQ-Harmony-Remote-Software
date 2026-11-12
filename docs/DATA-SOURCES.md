@@ -1,5 +1,20 @@
 # Data sources
 
+## Owner-approved remote presets and artwork
+
+For v0.3.0 the owner explicitly approved public distribution of both bundled
+`FQ Preset older.EZHex` and `FQ Preset newer.EZHex` configurations and the
+extracted default artwork. The presets are full remote configurations, not
+blank profiles or proof of compatibility with another remote.
+
+`data/default_slideshow` contains the charging battery screen and three
+blurred-light images. `data/default_icons` contains 15 menu-sized icons, with
+86 additional system/button images in `button_assets`. `data/screen_styles.json`
+contains validated display-style artwork extracted from the owner's backups.
+The owner's redistribution approval does not relicense these assets as MIT.
+Other private backups, project exports, manuals, and original PC-client
+screenshots are not included.
+
 ## Flipper-IRDB curated device profiles
 
 - Repository: <https://github.com/Lucaslhm/Flipper-IRDB>

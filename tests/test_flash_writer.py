@@ -105,6 +105,11 @@ class WriterTests(unittest.TestCase):
                 fw.write_configuration(remote, self.new, self.old[:-1] + b"\x00")
         self.assertEqual(remote.log, [])
 
+    def test_refuses_configuration_exceeding_flash_capacity(self):
+        oversized = bytes(fw.CONFIG_FLASH_LIMIT - fw.CONFIG_BASE + 1)
+        with self.assertRaisesRegex(fw.WriteError, "flash capacity"):
+            fw.plan_write(oversized, lambda _address, _count: b"")
+
     def test_verify_catches_bad_programming(self):
         remote = SimRemote(config=self.old)
         plan = fw.plan_write(self.new, remote.read_flash)

@@ -5,7 +5,9 @@ from pathlib import Path
 from harmony_one.config_reader import parse_config
 from harmony_one.fonts import read_font_sets
 from harmony_one.pictures import (
+    PictureError,
     decode_picture,
+    encode_rle_picture,
     find_picture_bank,
     picture_at,
     walk_bank,
@@ -28,6 +30,29 @@ def encoded_picture(width, height):
 
 
 class PictureTests(unittest.TestCase):
+    def test_rle_encoder_handles_wide_opaque_and_transparent_runs(self):
+        for pixels in (
+            [[0xF800] * 164, [None] * 164],
+            [[None, 0, 0xFFFF] * 50],
+        ):
+            encoded = encode_rle_picture(pixels)
+            picture = picture_at(encoded, 0, len(encoded))
+            self.assertEqual(picture.end, len(encoded))
+            decoded = decode_picture(encoded, picture)
+            self.assertEqual(len(decoded), len(pixels))
+            for original, row in zip(pixels, decoded):
+                for value, pixel in zip(original, row):
+                    if value is None:
+                        self.assertIsNone(pixel)
+                    else:
+                        red, green, blue, _ = pixel
+                        self.assertEqual((red >> 3) << 11 | (green >> 2) << 5 | blue >> 3, value)
+
+    def test_rle_encoder_rejects_invalid_dimensions_pixels_and_rows(self):
+        for pixels in ([], [[]], [[0] * 257], [[0], [0, 1]], [[-1]], [[0x10000]]):
+            with self.subTest(pixels=str(pixels)[:30]), self.assertRaises(PictureError):
+                encode_rle_picture(pixels)
+
     def test_raw_picture_measures_and_decodes(self):
         data = raw_picture(3, 2)
         picture = picture_at(data, 0, len(data))

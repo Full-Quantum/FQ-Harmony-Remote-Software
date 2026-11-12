@@ -2,6 +2,7 @@ import tempfile
 import tkinter as tk
 import unittest
 from pathlib import Path
+from tkinter import ttk
 from unittest.mock import patch
 
 from harmony_one.app import HarmonyOfflineApp
@@ -150,6 +151,60 @@ class ActivitySettingsUITests(unittest.TestCase):
         self.assertIsNotNone(self.app.activity_icon_image)
         apply(None)
         self.assertNotIn("icon", self.activity)
+
+    def test_every_device_and_activity_card_has_remote_change_icon_action(self):
+        device_calls = []
+        for card in self.app.device_cards.winfo_children():
+            buttons = [
+                widget
+                for widget in card.winfo_children()
+                if isinstance(widget, ttk.Frame)
+            ]
+            self.assertTrue(buttons)
+            change_buttons = [
+                child
+                for child in buttons[-1].winfo_children()
+                if isinstance(child, ttk.Button)
+                and child.cget("text") == "Change icon"
+            ]
+            self.assertEqual(len(change_buttons), 1)
+            with patch.object(
+                self.app,
+                "_change_remote_menu_icon",
+                side_effect=lambda role, name: device_calls.append((role, name)),
+            ):
+                change_buttons[0].invoke()
+        self.assertEqual(
+            device_calls,
+            [("device", "Samsung TV"), ("device", "Sony AV")],
+        )
+
+        activity_calls = []
+        cards = [
+            widget
+            for widget in self.app.activity_cards.winfo_children()
+            if isinstance(widget, ttk.LabelFrame)
+        ]
+        self.assertEqual(len(cards), 1)
+        buttons = [
+            widget
+            for widget in cards[0].winfo_children()
+            if isinstance(widget, ttk.Frame)
+        ]
+        change_buttons = [
+            child
+            for child in buttons[-1].winfo_children()
+            if isinstance(child, ttk.Button)
+            and child.cget("text") == "Change icon"
+        ]
+        self.assertEqual(len(change_buttons), 1)
+        with patch.object(
+            self.app,
+            "_change_remote_menu_icon",
+            side_effect=lambda role, name: activity_calls.append((role, name)),
+        ):
+            change_buttons[0].invoke()
+        self.assertEqual(activity_calls, [("activity", "Watch TV")])
 
 
 if __name__ == "__main__":

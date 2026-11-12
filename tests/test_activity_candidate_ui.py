@@ -27,20 +27,34 @@ class ActivityCandidateUITests(unittest.TestCase):
             with patch("harmony_one.app.messagebox.askyesno", return_value=True), \
                  patch("harmony_one.app.messagebox.showinfo") as info, \
                  patch("harmony_one.app.filedialog.asksaveasfilename", return_value=str(path)), \
-                 patch("harmony_one.app.prepare_activity_rename", return_value=candidate), \
-                 patch("harmony_one.app.write_project_to_remote") as writer:
+                 patch("harmony_one.app.prepare_activity_rename", return_value=candidate):
                 HarmonyOfflineApp._preview_write(self.app)
             self.assertEqual(path.read_bytes(), b"candidate")
-            writer.assert_not_called()
-            self.assertIn("not an upload-ready", info.call_args.args[1])
+            self.assertIn("not upload-ready", info.call_args.args[1])
 
-    def test_other_project_change_stays_blocked(self):
+    def test_other_project_change_routes_to_transfer_workflow_instead_of_upload_error(self):
         self.app.project["activities"][0]["volume_device_id"] = "tv"
-        with patch("harmony_one.app.messagebox.showwarning") as warning, \
-             patch("harmony_one.app.prepare_activity_rename") as encoder:
+        selected = []
+        status = []
+        self.app.tabs = SimpleNamespace(select=selected.append)
+        self.app.backup_transfer_frame = object()
+        self.app.restore_save_frame = object()
+        self.app.backup_transfer_tabs = SimpleNamespace(
+            select=lambda frame: selected.append(frame)
+        )
+        self.app.save_restore = SimpleNamespace(
+            status=SimpleNamespace(set=status.append)
+        )
+        self.app._open_restore_save = lambda: HarmonyOfflineApp._open_restore_save(self.app)
+        with patch("harmony_one.app.prepare_activity_rename") as encoder:
             HarmonyOfflineApp._preview_write(self.app)
         encoder.assert_not_called()
-        self.assertIn("Writing is blocked", warning.call_args.args[1])
+        self.assertEqual(
+            selected,
+            [self.app.backup_transfer_frame, self.app.restore_save_frame],
+        )
+        self.assertIn("local project changes cannot be included", status[-1])
+        self.assertIn("Transfer Remote workflow", status[-1])
 
     def test_existing_candidate_is_not_overwritten(self):
         with tempfile.TemporaryDirectory() as temporary:

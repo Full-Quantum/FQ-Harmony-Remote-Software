@@ -11,5 +11,10 @@ local-research/
 # Keep other remote data private. This one owner-approved raw backup is public.
 backups/
 HarmonyProject*.json
+icons/
+slideshow/
+custom_screen_styles.json
 *.EZHex
 !examples/primary-remote/HarmonyOne-slideshow-observed-20261108-134253.EZHex
+!src/harmony_one/data/presets/FQ Preset older.EZHex
+!src/harmony_one/data/presets/FQ Preset newer.EZHex

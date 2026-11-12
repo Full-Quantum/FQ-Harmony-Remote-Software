@@ -1,7 +1,23 @@
 # FQ-Harmony-Remote-Software
 
-An independent, open-source Windows application for backing up and working with
-Logitech Harmony One remote data over USB.
+Independent, open-source Windows software for backing up and working with
+Logitech Harmony One remotes over USB. Runs locally without an online
+configuration service.
+
+## Download v0.3.0
+
+**[Download the Windows desktop app](https://github.com/Full-Quantum/FQ-Harmony-Remote-Software/releases/download/v0.3.0/FQ-Harmony-Remote-Software-v0.3.0.exe)**
+
+[Latest release and notes](https://github.com/Full-Quantum/FQ-Harmony-Remote-Software/releases/latest)
+
+The portable executable does not need Python installed. Put it in a writable
+folder before running it: backups, icons, slideshow images, and saved custom
+styles are kept beside the app, not in AppData. Windows may warn about this
+unsigned application; download only from this repository's releases.
+
+**Early development:** general device/activity configuration generation is
+not finished. Local Remote Data JSON edits are not generally uploadable.
+Keep an original backup and use a spare remote for experimental writes.
 
 ## Why this exists
 
@@ -10,12 +26,6 @@ remotes can still be configured with Logitech's newer Harmony software, I worry
 that it too could eventually be shut down. I want a way to keep using and
 preserving these remotes without relying on an online configuration service.
 
-FQ-Harmony-Remote-Software runs locally and can back up a Harmony One, browse
-decoded devices and activities, and edit local Remote Data offline. The
-long-term goal is to create and upload complete device and activity
-configurations independently. **That goal is not finished:** edits to local
-Remote Data generally cannot yet be uploaded to a remote.
-
 For now, I recommend using Logitech's newer Harmony software while it remains
 available to add devices and set up activities. Its device library is far
 larger than this project's starter library, and setup from scratch here is
@@ -23,12 +33,7 @@ still under development.
 
 I also wanted to bring back the **recharging slideshow**: the older software
 allowed pictures to appear while a Harmony One sat on its charging pad, a
-feature dropped from the newer software. This project can detect and replace
-slideshow-cycle pictures on supported configurations, with playback order
-decoded from the backup. Picture replacement has been tested on a spare
-remote, but support is not universal or complete: slots may be shared with
-other screens, screen sleep can interrupt playback, and adding slots or
-adjusting slide timing is not supported.
+feature dropped from the newer software.
 
 > **A small legal-ish note:** I asked GitHub Copilot to help build this in a
 > clean-room setting, with instructions not to borrow Logitech's source code.
@@ -38,39 +43,86 @@ adjusting slide timing is not supported.
 > Third-party components and their licenses are identified in
 > [data sources](docs/DATA-SOURCES.md); this note is not a legal certification.
 
-Status: early development (v0.1.2). See [docs/FEATURES.md](docs/FEATURES.md)
-for what works today.
+## New in v0.3.0
 
-## Version 0.1.2 at a glance
+- **Home remote preview:** back up a connected remote and edit a copy; preview
+  decoded activity/device pages, names, order, artwork, icons, and detected style.
+  Activities appears before Devices throughout the relevant UI.
+- **Backups & Transfer:** browse saved contents, select the bundled older/newer
+  FQ presets or another backup, and back up/check a destination before a guarded
+  full-configuration transfer. Backup-folder shortcuts are included.
+- **Remote icons:** change individual activity/device menu icons; scan a remote
+  and save its menu icons to the local `icons` folder. User-added PNG/GIF files
+  appear in Change icon pickers. Defaults include 15 menu icons and 86 additional
+  system/button images in `icons/button_assets`; those other-size images are
+  not offered as menu-row icons.
+- **Display styles and custom-style maker:** separate Activities and Devices
+  pages offer solid, two-colour gradient, or fitted PNG/GIF backgrounds, button
+  fill, rounded/sharp corners, and optional coloured borders with pixel
+  thickness. Preview and save named artwork for the existing apply workflow.
+  Embedded text/font controls remain unavailable and existing text is preserved.
+- **Slideshow:** six visible slots, per-slot image browsing and whole-second
+  time controls. All six default time fields start at **3 seconds**; loading a
+  backup preserves its current timings until edited.
+- **Return to default slideshow:** restore the original four bundled images
+  (charging battery and three blurred-light images) at 3 seconds each in the
+  candidate. A supported six-image cycle returns to four active images, leaving
+  slots 5 and 6 empty and disabled. Reset uses bundled originals, not customized
+  user-library copies.
+- **Clock:** set wall time using the local or a selected IANA time zone.
+  The remote does not retain the selected zone or future daylight-saving rules.
+- **Remote Assistant:** turn recognized saved prompt settings on/off without
+  deleting assistant screens; unsupported layouts are explicitly disabled.
 
-- **Available:** local USB backups, backup browsing, local device/activity
-  editing, and fixed-size slideshow picture replacement on supported backups.
-- **Experimental:** adding an activity based on existing remote devices. This
-  requires Node.js and does not copy every behavior from the template.
-- **Not yet available:** general upload of edited or newly created Remote Data,
-  adding arbitrary devices to a remote, and complete slideshow management.
+See [feature status](docs/FEATURES.md) and [UI reference](docs/UI-REFERENCE.md)
+for details.
 
-The application does not need an internet connection to run. Installing build
-dependencies or Node.js, if needed, is a separate step.
+## What remains limited
 
-The banner displays the application version from `src/harmony_one/__init__.py`.
-Versions use `major.minor.patch`: increase the patch for fixes, the minor for
-backward-compatible features, and the major for incompatible changes. The
-banner also shows the current local Remote Data JSON's save state. This editable
-file is distinct from the raw `.EZHex` remote backup. Existing JSON filenames
-and formats remain compatible.
+- Structural device/activity changes in local Remote Data JSON cannot generally
+  be compiled and uploaded. Individual object exports are archival source data,
+  not transferable remote configurations.
+- Experimental activity addition uses devices already in the backup, requires
+  Node.js, and does not add arbitrary new devices or copy every template behavior.
+- Slideshow slots are limited to the recognized backup cycle; four-image cycles
+  are not expanded to six. Shared pictures can also appear on system/activity
+  screens, and screen sleep may interrupt playback.
+- Saving a custom style stores self-contained artwork, not an editable design
+  recipe. Applying display styles replaces recognized menu-row icons with a
+  generic list icon while preserving labels and order.
+- Cross-remote firmware compatibility, custom styles, icon edits, clock changes,
+  Assistant settings, and the new slideshow timing/cycle-shortening behavior
+  are not hardware-validated. Offline validation is not a hardware guarantee.
 
-## Core concepts
+## Basic workflow
 
-- **Devices**: living-room IR devices (TV, receiver, streamer...) whose IR
-  controls are stored on the remote and mapped to physical or touch-screen buttons.
-- **Activities**: one-touch sequences that power on several devices and set
-  inputs/channels.
+1. Connect a charged Harmony One over USB and choose **Back up connected Harmony
+   One Remote and start editing a copy...** on Home.
+2. Keep the saved original `.EZHex`. Local Remote Data JSON is a separate file.
+3. Use Activities, Devices, Slideshow, Clock, Remote Assistant, Display Style,
+   or Backups & Transfer as appropriate. Preview and prepare changes offline.
+4. Only use an explicit write action when ready. Hardware writes require the
+   relevant confirmations, a matching live baseline, and read-back verification.
+   The transfer workflow replaces the complete destination configuration.
 
-Requirements: [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md).
-Clean-room rules: [docs/CLEANROOM.md](docs/CLEANROOM.md).
+**Discard unwritten changes** on Slideshow restores the loaded images, timings,
+and cycle. Editing or resetting a slideshow does not itself write to USB.
+
+## Safety
+
+Fixed-size slideshow picture replacement and one same-length activity rename
+have been written and read-back verified on a spare Style A remote.
+Experimental activity-addition uploads and corrected device-screen navigation
+have also been tested on one configuration; infrared behavior needs more testing.
+
+Writing erases and rewrites remote flash; interruption can leave a remote
+unusable, and recovery is not guaranteed. Read
+[remote-write safety and evidence](docs/REMOTE-WRITES.md) before writing.
+Keep the remote connected until completion and preserve recovery backups.
 
 ## Run from source
+
+Use Python 3.10 or later on Windows:
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -78,96 +130,43 @@ $env:PYTHONPATH = "src"
 python -m harmony_one
 ```
 
-## Test
+The optional activity composer needs Node.js installed separately.
+Normal app operation is offline; installing dependencies is a separate step.
+
+### Test
 
 ```powershell
 $env:PYTHONPATH = "src"
 python -m unittest discover -s tests -v
 ```
 
-## Build the portable executable
+Private-backup-dependent tests may be skipped. Public presets and examples are
+included for reproducible offline checks.
+
+### Build the portable executable
 
 ```powershell
 python -m pip install pyinstaller
 python -m PyInstaller --noconfirm --clean --distpath dist --workpath build packaging\HarmonyOne.spec
 ```
 
-The built Windows GUI is `dist\HarmonyOne.exe`. It is a portable, single-file
-desktop app; run it directly without installing Python. Devices, activities,
-and sequence edits are currently saved as local Remote Data. Structural
-device/activity changes cannot yet be uploaded to the remote. An
-experimental **Add activity to remote** workflow uses existing remote devices,
-with a fresh backup, candidate inspection and explicit upload acknowledgement.
-It uses an optional portable Node.js runtime when present, otherwise a local
-Node.js installation, and an attributed independent MIT composer. The portable
-runtime is not included in the repository; the activity workflow needs Node.js
-installed or supplied separately.
-It does not add devices or copy all template behavior. Fixed-size
-slideshow and same-length activity-name writes are available only through their
-separate verified workflows; see [docs/REMOTE-WRITES.md](docs/REMOTE-WRITES.md).
-The USB tab also exports decoded devices and activities as separate JSON
-objects from a backup. These are incomplete source archives, not upload-ready
-configurations; see [docs/REMOTE-OBJECTS.md](docs/REMOTE-OBJECTS.md).
+The result is `dist\HarmonyOne.exe`. Versions use `major.minor.patch`, and the
+app banner identifies its version and separate local Remote Data save state.
 
-In an activity's **Settings**, choose its devices and add actions in the order
-they should occur. Actions can be moved, removed, or separated with delays.
-Optional channel/volume roles and input notes are local metadata; input notes
-do not themselves add an action. Save the Remote Data from the main toolbar to
-keep these edits. Imported remote state steps may be shown with decoded labels
-or numeric input settings where the original names are not available.
-Activity Settings also offers built-in icons and custom PNG/GIF artwork, stored
-inside local Remote Data and individual activity packages. Custom files must be
-at most 2 MiB and 1024 x 1024 pixels; they are fitted to a 32 x 32 preview.
-GIF uses its first frame, and partial transparency becomes opaque. This is a
-local preview limit, not a verified remote specification. Existing remote icons
-are not decoded and icon changes cannot yet be uploaded to a remote.
+## Contributing, bundled data, and license
 
-When a backup starts from any page, the USB tab and a yellow header button
-show reading progress. Select the button to see the USB page; the indicator
-clears when the read finishes or fails.
+Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+Follow [clean-room guidance](docs/CLEANROOM.md), include test evidence, and
+review all files before sharing.
 
-The Slideshow tab shows only the detected timed picture cycle in playback order
-when the configuration matches the tested layout. The number of available slots
-is the maximum for that backup; replacing a picture does not add a slot. If the
-cycle cannot be identified, or its screens share a picture, replacement is
-disabled rather than offering unrelated pictures. The cycle can include a
-charging or system screen, and any picture may be reused on activity or system
-screens. Screen sleep can interrupt playback, so the number of slots is not a
-guarantee that every image will be visible before the screen turns off.
-Adjustable timing and extending the screen-on period are not yet supported.
+Owner-approved remote photographs and examples remain included. v0.3.0 also
+includes the two owner-approved FQ preset backups and extracted default
+icon/slideshow/style artwork. These assets contain remote configuration and
+embedded artwork and are distributed with the owner's explicit permission;
+their inclusion does not imply they are MIT licensed. Other personal backups,
+local project JSON, runtime folders, and third-party manuals/screenshots are
+not published.
 
-## Safety
-
-Fixed-size slideshow replacements and one same-length activity rename have been
-written and read-back verified on the spare Style A remote. General device and
-activity Remote Data changes cannot yet be uploaded because configuration generation
-and the general encoder are not implemented. The separate experimental
-activity-addition workflow has verified test uploads and owner-confirmed
-device-screen navigation on one configuration. Its startup screen still shows
-the template name; individual infrared functions need further testing.
-See [docs/REMOTE-WRITES.md](docs/REMOTE-WRITES.md)
-before any hardware write. Personal backups are git-ignored except for the
-owner-approved example listed below.
-Writing interrupts and rewrites remote flash; a failed write can leave a remote
-unusable, and recovery is not guaranteed. Test with a spare and keep a backup.
-
-## Contributing and examples
-
-Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md) for setup,
-testing, provenance, and hardware safety guidelines.
-
-Owner-approved remote photographs are in `docs/reference`, numbered test images
-in `examples/slideshow-test`, and an editable Remote Data JSON and raw `.EZHex`
-backup in `examples/primary-remote`. The raw backup contains configuration data
-and embedded artwork. The owner confirmed permission to redistribute that
-artwork. The third-party manual and PC-client screenshots are not included.
-Other personal backups remain ignored; Remote Data JSON and individual exports
-may have arbitrary filenames and should be reviewed before sharing.
-
-## License
-
-The project's code is MIT licensed; see [LICENSE](LICENSE). Bundled
-third-party components and data have their own notices and terms; see
-[docs/DATA-SOURCES.md](docs/DATA-SOURCES.md) and the bundled license files.
-The inclusion of example artwork and photographs does not imply they are
-licensed under MIT.
+Project code is MIT licensed; see [LICENSE](LICENSE). Third-party components and
+data retain their own notices and terms; see [data sources](docs/DATA-SOURCES.md)
+and the bundled license files.

@@ -2,6 +2,7 @@
 
 import os
 import sys
+from PyInstaller.utils.hooks import collect_all
 
 project_root = os.path.abspath(os.path.join(SPECPATH, ".."))
 source_root = os.path.join(project_root, "src")
@@ -20,18 +21,23 @@ if not os.path.isdir(_tcl_dir) or not os.path.isdir(_tk_dir):
         "the GUI exe would not start"
     )
 tcl_tk_datas = [(_tcl_dir, "_tcl_data"), (_tk_dir, "_tk_data")]
+tzdata_datas, tzdata_binaries, tzdata_hiddenimports = collect_all("tzdata")
 
 a = Analysis(
     [os.path.join(SPECPATH, 'run_harmony_one.py')],
     pathex=[source_root],
-    binaries=[],
+    binaries=tzdata_binaries,
     datas=[
         (os.path.join(data_root, 'catalogs.json'), 'data'),
         (os.path.join(data_root, 'features.json'), 'data'),
+        (os.path.join(data_root, 'screen_styles.json'), 'data'),
+        (os.path.join(data_root, 'presets'), 'data/presets'),
+        (os.path.join(data_root, 'default_icons'), 'harmony_one/data/default_icons'),
+        (os.path.join(data_root, 'default_slideshow'), 'harmony_one/data/default_slideshow'),
         (os.path.join(data_root, 'alphabet.json'), 'harmony_one/data'),
         (os.path.join(source_root, 'harmony_one', 'vendor'), 'harmony_one/vendor'),
-    ] + tcl_tk_datas,
-    hiddenimports=['hid'],
+    ] + tcl_tk_datas + tzdata_datas,
+    hiddenimports=['hid'] + tzdata_hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

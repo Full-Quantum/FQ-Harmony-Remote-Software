@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import copy
 import json
 import os
@@ -19,6 +20,10 @@ import tkinter as tk
 from typing import Any
 
 from harmony_one import __version__
+from harmony_one.app_paths import (
+    backup_directory as app_backup_directory,
+    portable_directory as app_portable_directory,
+)
 from harmony_one.config_reader import ConfigError, parse_config
 from harmony_one.activity_encoder import prepare_activity_rename
 from harmony_one.activity_icon_dialog import ActivityIconDialog
@@ -39,11 +44,29 @@ from harmony_one.harmony_project import (
 from harmony_one.import_ir import parse_ir
 from harmony_one.harmony_usb import BackupError, backup_connected_harmony_one
 from harmony_one.backup_browser import BackupBrowserTab
+from harmony_one.clock_tab import ClockTab
+from harmony_one.icon_library import (
+    IconLibraryError,
+    export_remote_menu_icons,
+    icon_library_directory,
+    seed_default_icons,
+)
 from harmony_one.object_library import build_remote_objects, export_remote_objects
 from harmony_one.project_objects import export_project_object, import_project_object
-from harmony_one.remote_writer import WriteBlocked, plan_changes, write_project_to_remote
+from harmony_one.remote_writer import plan_changes
+from harmony_one.screen_style_tab import ScreenStyleTab
+from harmony_one.screen_styles import load_builtin_styles
 from harmony_one.slideshow_tab import SlideshowTab
+from harmony_one.remote_assistant_tab import RemoteAssistantTab
+from harmony_one.save_restore import validate_source_save
+from harmony_one.save_restore_tab import FQ_PRESET_FILES, SaveRestoreTab
 from harmony_one.feature_tracker import load_feature_catalog
+from harmony_one.remote_preview import (
+    RemotePreview,
+    RemotePreviewPage,
+    read_remote_preview,
+    render_remote_preview_page,
+)
 
 
 APP_NAME = "FQ's Harmony Remote Project"
@@ -75,16 +98,11 @@ def bundled_project() -> dict[str, Any]:
 
 
 def portable_directory() -> Path:
-    if getattr(sys, "frozen", False):
-        return Path(sys.executable).resolve().parent
-    return Path(__file__).resolve().parents[2]
+    return app_portable_directory()
 
 
 def backup_directory() -> Path:
-    directory = portable_directory()
-    if getattr(sys, "frozen", False) and directory.name.casefold() == "portable":
-        return directory.parent / "backups"
-    return directory / "backups"
+    return app_backup_directory(portable_directory())
 
 
 def list_logitech_usb_devices() -> list[tuple[str, str]]:
@@ -200,6 +218,8 @@ class HarmonyOfflineApp:
         self.project_path = portable_directory() / DEFAULT_PROJECT_NAME
         self.project_saved = False
         self.dirty = False
+        self.remote_preview: RemotePreview | None = None
+        self.home_preview_page_labels: dict[str, RemotePreviewPage] = {}
         self.selected_device_id: str | None = None
         self.selected_activity_id: str | None = None
         self.device_tree_iids: dict[str, str] = {}
@@ -208,6 +228,7 @@ class HarmonyOfflineApp:
         self._import_after_backup = False
         self._export_after_backup = False
         self._browse_after_backup = False
+        self._export_icons_after_backup = False
         self.remote_blob: bytes | None = None
         self.remote_backup_path: Path | None = None
         self.remote_project: dict[str, Any] | None = None
@@ -325,24 +346,6 @@ class HarmonyOfflineApp:
             command=lambda: self.tabs.select(self.usb_tab),
         )
 
-        toolbar = ttk.Frame(self.root, padding=(8, 8, 8, 4))
-        toolbar.pack(fill="x")
-        ttk.Button(toolbar, text="New Remote Data", command=self._new_project).pack(side="left")
-        ttk.Button(toolbar, text="Open...", command=self._open_project).pack(side="left", padx=4)
-        ttk.Button(toolbar, text="Save", command=self._save_project).pack(side="left")
-        ttk.Button(toolbar, text="Save as...", command=self._save_project_as).pack(
-            side="left", padx=4
-        )
-        ttk.Button(toolbar, text="Read from connected remote", command=self._read_from_remote).pack(
-            side="left", padx=(12, 0)
-        )
-        ttk.Button(toolbar, text="Import remote backup...", command=self._import_remote_backup).pack(
-            side="left", padx=4
-        )
-        ttk.Button(toolbar, text="Write to remote...", command=self._preview_write).pack(
-            side="left"
-        )
-
         self.tabs = ttk.Notebook(self.root, style="Harmony.TNotebook")
         self.tabs.pack(fill="both", expand=True, padx=8, pady=(0, 8))
         self.home_tab = ttk.Frame(self.tabs, padding=10)
@@ -350,20 +353,40 @@ class HarmonyOfflineApp:
         self.activity_tab = ttk.Frame(self.tabs, padding=10)
         self.usb_tab = ttk.Frame(self.tabs, padding=10)
         self.slideshow_frame = ttk.Frame(self.tabs, padding=10)
-        self.backup_frame = ttk.Frame(self.tabs, padding=10)
+        self.clock_frame = ttk.Frame(self.tabs, padding=10)
+        self.remote_assistant_frame = ttk.Frame(self.tabs, padding=10)
+        self.screen_style_frame = ttk.Frame(self.tabs, padding=10)
+        self.icons_frame = ttk.Frame(self.tabs, padding=10)
+        self.backup_transfer_frame = ttk.Frame(self.tabs, padding=10)
+        self.backup_transfer_tabs = ttk.Notebook(
+            self.backup_transfer_frame, style="Harmony.TNotebook"
+        )
+        self.backup_transfer_tabs.pack(fill="both", expand=True)
+        self.backup_frame = ttk.Frame(self.backup_transfer_tabs, padding=10)
+        self.restore_save_frame = ttk.Frame(self.backup_transfer_tabs, padding=10)
         self.tabs.add(self.home_tab, text="Home")
-        self.tabs.add(self.device_tab, text="Devices")
         self.tabs.add(self.activity_tab, text="Activities")
-        self.tabs.add(self.backup_frame, text="Backup")
+        self.tabs.add(self.device_tab, text="Devices")
+        self.tabs.add(self.backup_transfer_frame, text="Backups & Transfer")
+        self.backup_transfer_tabs.add(self.restore_save_frame, text="Transfer")
+        self.backup_transfer_tabs.add(self.backup_frame, text="Browse Contents")
         self.tabs.add(self.slideshow_frame, text="Slideshow")
+        self.tabs.add(self.clock_frame, text="Clock")
+        self.tabs.add(self.remote_assistant_frame, text="Remote Assistant")
+        self.tabs.add(self.screen_style_frame, text="Display Style")
+        self.tabs.add(self.icons_frame, text="Icons")
         self.tabs.add(self.usb_tab, text="USB")
         self._build_home_tab()
         self._build_device_tab()
         self._build_activity_tab()
         self._build_usb_tab()
         self.slideshow = SlideshowTab(self.slideshow_frame, self)
+        self.clock = ClockTab(self.clock_frame, self)
+        self.remote_assistant = RemoteAssistantTab(self.remote_assistant_frame, self)
+        self.screen_styles = ScreenStyleTab(self.screen_style_frame, self)
+        self._build_icons_page()
         self.backup_browser = BackupBrowserTab(self.backup_frame, self)
-
+        self.save_restore = SaveRestoreTab(self.restore_save_frame, self)
         self.status = tk.StringVar(value="Offline Remote Data editor")
         ttk.Label(self.root, textvariable=self.status, anchor="w", relief="sunken").pack(
             fill="x", side="bottom"
@@ -382,86 +405,105 @@ class HarmonyOfflineApp:
         self.usb_activity_text.set("")
 
     def _build_home_tab(self) -> None:
-        self.home_tab.columnconfigure(0, weight=1)
+        self.home_tab.columnconfigure(0, weight=0)
         self.home_tab.columnconfigure(1, weight=1)
+        self.home_tab.rowconfigure(1, weight=1)
         ttk.Label(
             self.home_tab,
             text="Welcome to Harmony Remote Manager",
             font=("Segoe UI", 16, "bold"),
-        ).grid(row=0, column=0, columnspan=2, sticky="w", pady=(4, 2))
-        ttk.Label(
+        ).grid(row=0, column=0, columnspan=2, sticky="w", pady=(4, 10))
+
+        workspace_card = ttk.LabelFrame(
             self.home_tab,
-            style="Harmony.Muted.TLabel",
-            wraplength=880,
-            justify="left",
-            text=(
-                "Manage a Logitech Harmony One from this PC. Connect the remote over USB to "
-                "take a complete, validated backup, browse the devices and activities stored "
-                "on it, and edit local Remote Data offline. Backups are read-only; nothing is "
-                "written to the remote without explicit, separately confirmed steps."
-            ),
-        ).grid(row=1, column=0, columnspan=2, sticky="w", pady=(0, 12))
-
-        remote_card = ttk.LabelFrame(
-            self.home_tab, text="Your remote", style="Harmony.Card.TLabelframe", padding=12
+            text="Connected remote",
+            style="Harmony.Card.TLabelframe",
+            padding=12,
         )
-        remote_card.grid(row=2, column=0, sticky="nsew", padx=(0, 8))
+        workspace_card.grid(row=1, column=0, sticky="new", padx=(0, 12))
         ttk.Label(
-            remote_card,
+            workspace_card,
             style="Harmony.Muted.TLabel",
-            wraplength=400,
+            wraplength=300,
             justify="left",
             text=(
-                "Connect the Harmony One with its USB cable and make sure its battery is "
-                "charged before starting. A full backup takes a few minutes."
+                "Back up the connected Harmony One and open a separate Remote Data copy "
+                "for editing. Your complete original backup is preserved."
             ),
-        ).pack(anchor="w", pady=(0, 8))
-        ttk.Button(
-            remote_card,
-            text="Back up remote and browse contents",
+        ).grid(row=0, column=0, sticky="w", pady=(0, 8))
+        self.home_edit_copy_button = ttk.Button(
+            workspace_card,
+            text="Back up connected Harmony One Remote and start editing a copy...",
             style="Harmony.Primary.TButton",
-            command=lambda: self._start_backup(browse_after=True),
-        ).pack(anchor="w", pady=2)
-        ttk.Button(
-            remote_card,
-            text="Back up remote only",
-            command=lambda: self.tabs.select(self.usb_tab),
-        ).pack(anchor="w", pady=2)
-        ttk.Button(
-            remote_card,
-            text="Read remote into the Remote Data editor",
             command=self._read_from_remote,
-        ).pack(anchor="w", pady=2)
-
-        offline_card = ttk.LabelFrame(
-            self.home_tab, text="Work offline", style="Harmony.Card.TLabelframe", padding=12
         )
-        offline_card.grid(row=2, column=1, sticky="nsew", padx=(8, 0))
+        self.home_edit_copy_button.grid(row=1, column=0, sticky="w", pady=2)
+        self.home_backup_folder_button = ttk.Button(
+            workspace_card,
+            text="Open backup folder",
+            command=self._open_backup_folder,
+        )
+        self.home_backup_folder_button.grid(row=2, column=0, sticky="w", pady=2)
+
+        preview_card = ttk.LabelFrame(
+            self.home_tab,
+            text="Scanned remote preview",
+            style="Harmony.Card.TLabelframe",
+            padding=10,
+        )
+        preview_card.grid(row=1, column=1, sticky="nsew")
+        preview_card.columnconfigure(0, weight=1)
+        preview_card.rowconfigure(2, weight=1)
+        selectors = ttk.Frame(preview_card)
+        selectors.grid(row=0, column=0, sticky="ew", pady=(0, 6))
+        ttk.Label(selectors, text="Menu:").pack(side="left")
+        self.home_preview_role = tk.StringVar(value="Activities")
+        self.home_preview_role_combo = ttk.Combobox(
+            selectors,
+            textvariable=self.home_preview_role,
+            values=("Activities", "Devices"),
+            state="readonly",
+            width=13,
+        )
+        self.home_preview_role_combo.pack(side="left", padx=(5, 12))
+        self.home_preview_role_combo.bind(
+            "<<ComboboxSelected>>", self._on_home_preview_role_changed
+        )
+        ttk.Label(selectors, text="Page:").pack(side="left")
+        self.home_preview_page = tk.StringVar()
+        self.home_preview_page_combo = ttk.Combobox(
+            selectors,
+            textvariable=self.home_preview_page,
+            state="readonly",
+            width=16,
+        )
+        self.home_preview_page_combo.pack(side="left", padx=(5, 0))
+        self.home_preview_page_combo.bind(
+            "<<ComboboxSelected>>", self._on_home_preview_page_changed
+        )
+        self.home_preview_style = tk.StringVar(value="Style: Not scanned")
         ttk.Label(
-            offline_card,
+            preview_card,
+            textvariable=self.home_preview_style,
             style="Harmony.Muted.TLabel",
-            wraplength=400,
-            justify="left",
-            text=(
-                "No remote connected? Browse a saved backup file or edit the local "
-                "Remote Data's devices and activities."
-            ),
-        ).pack(anchor="w", pady=(0, 8))
-        ttk.Button(
-            offline_card,
-            text="Browse a saved backup file",
-            command=self._home_browse_backup,
-        ).pack(anchor="w", pady=2)
-        ttk.Button(
-            offline_card,
-            text="Edit devices",
-            command=lambda: self.tabs.select(self.device_tab),
-        ).pack(anchor="w", pady=2)
-        ttk.Button(
-            offline_card,
-            text="Edit activities",
-            command=lambda: self.tabs.select(self.activity_tab),
-        ).pack(anchor="w", pady=2)
+            wraplength=350,
+        ).grid(row=1, column=0, sticky="w", pady=(0, 6))
+        self.home_preview_canvas = tk.Canvas(
+            preview_card,
+            width=370,
+            height=460,
+            background="#dedede",
+            highlightthickness=0,
+        )
+        self.home_preview_canvas.grid(row=2, column=0, sticky="n")
+        self.home_preview_placeholder = self.home_preview_canvas.create_text(
+            185,
+            230,
+            text="Scan or load a remote backup to see its menu.",
+            width=330,
+            justify="center",
+            fill="#333333",
+        )
 
         self.home_summary = tk.StringVar()
         ttk.Label(
@@ -470,11 +512,169 @@ class HarmonyOfflineApp:
             style="Harmony.Muted.TLabel",
             wraplength=880,
             justify="left",
-        ).grid(row=3, column=0, columnspan=2, sticky="w", pady=(12, 0))
+        ).grid(row=2, column=0, columnspan=2, sticky="w", pady=(12, 0))
         self._refresh_home_summary()
 
+    def _on_home_preview_role_changed(self, _event: tk.Event | None = None) -> None:
+        self._refresh_home_preview_choices()
+
+    def _on_home_preview_page_changed(self, _event: tk.Event | None = None) -> None:
+        self._render_home_preview_page()
+
+    def _load_home_preview(self, blob: bytes) -> None:
+        try:
+            self.remote_preview = read_remote_preview(blob)
+        except ValueError as error:
+            self.remote_preview = None
+            self.home_preview_style.set(f"Preview unavailable: {error}")
+            self.home_preview_canvas.delete("all")
+            self.home_preview_canvas.create_text(
+                185, 230, text=str(error), width=330, justify="center", fill="#8b0000"
+            )
+            self.home_preview_role_combo.configure(values=())
+            self.home_preview_page_combo.configure(values=())
+            self.home_preview_page_labels.clear()
+            return
+        self.home_preview_style.set(
+            f"Style: {self.remote_preview.style_name} "
+            f"({self.remote_preview.style_fingerprint[:12]})"
+        )
+        self._refresh_home_preview_choices()
+
+    def _refresh_home_preview_choices(self) -> None:
+        if self.remote_preview is None:
+            return
+        role = "activities" if self.home_preview_role.get() == "Activities" else "devices"
+        pages = [page for page in self.remote_preview.pages if page.role == role]
+        available_roles = {
+            "Activities" if page.role == "activities" else "Devices"
+            for page in self.remote_preview.pages
+        }
+        roles = tuple(label for label in ("Activities", "Devices") if label in available_roles)
+        self.home_preview_role_combo.configure(values=roles)
+        if self.home_preview_role.get() not in roles and roles:
+            self.home_preview_role.set(roles[0])
+            role = "activities" if roles[0] == "Activities" else "devices"
+            pages = [page for page in self.remote_preview.pages if page.role == role]
+        self.home_preview_page_labels = {
+            f"Page {page.page + 1}": page
+            for page in pages
+        }
+        page_labels = tuple(self.home_preview_page_labels)
+        self.home_preview_page_combo.configure(values=page_labels)
+        if page_labels:
+            self.home_preview_page.set(page_labels[0])
+            self._render_home_preview_page()
+        else:
+            self.home_preview_canvas.delete("all")
+            self.home_preview_canvas.create_text(
+                185, 230, text="No menu pages for this selection.", fill="#333333"
+            )
+
+    def _render_home_preview_page(self) -> None:
+        page = self.home_preview_page_labels.get(self.home_preview_page.get())
+        if page is None:
+            return
+        try:
+            image_data = render_remote_preview_page(page)
+            photo = tk.PhotoImage(
+                master=self.root, data=base64.b64encode(image_data).decode("ascii")
+            )
+        except ValueError as error:
+            self.home_preview_canvas.delete("all")
+            self.home_preview_canvas.create_text(
+                185, 230, text=f"Could not render menu page:\n{error}", fill="#8b0000"
+            )
+            return
+        self.home_preview_photo = photo
+        self.home_preview_canvas.delete("all")
+        self.home_preview_canvas.create_image(8, 8, image=photo, anchor="nw")
+        for row in page.rows:
+            x = 8 + 75
+            y = 8 + row.y + 25
+            self.home_preview_canvas.create_text(
+                x + 1,
+                y + 1,
+                text=row.name,
+                width=82,
+                anchor="w",
+                fill="#111111",
+                font=("Segoe UI", 7, "bold"),
+            )
+            self.home_preview_canvas.create_text(
+                x,
+                y,
+                text=row.name,
+                width=82,
+                anchor="w",
+                fill="#ffffff",
+                font=("Segoe UI", 7, "bold"),
+            )
+
+    def _build_icons_page(self) -> None:
+        self.icons_frame.columnconfigure(0, weight=1)
+        try:
+            seed_default_icons()
+        except IconLibraryError as error:
+            seed_status = f"Could not initialize default icons: {error}"
+        else:
+            seed_status = "Bundled default icons are installed; added images appear in the icon picker."
+        ttk.Label(
+            self.icons_frame,
+            text="Remote menu icon library",
+            font=("Segoe UI", 14, "bold"),
+        ).grid(row=0, column=0, sticky="w")
+        ttk.Label(
+            self.icons_frame,
+            text=(
+                "Scan a connected Harmony One to export its distinct activity and device "
+                "menu icons. Add PNG/GIF files to the user icons folder to use them in the "
+                "Change icon picker."
+            ),
+            wraplength=880,
+            justify="left",
+        ).grid(row=1, column=0, sticky="w", pady=(4, 10))
+        ttk.Label(
+            self.icons_frame,
+            text=seed_status,
+            wraplength=880,
+            justify="left",
+        ).grid(row=2, column=0, sticky="w", pady=(0, 8))
+        ttk.Label(
+            self.icons_frame,
+            text=f"Icons folder: {icon_library_directory()}",
+            wraplength=880,
+            justify="left",
+        ).grid(row=3, column=0, sticky="w", pady=(0, 8))
+        controls = ttk.Frame(self.icons_frame)
+        controls.grid(row=4, column=0, sticky="w")
+        self.export_icons_button = ttk.Button(
+            controls,
+            text="Scan remote and save menu icons",
+            command=self._scan_and_export_icons,
+        )
+        self.export_icons_button.pack(side="left")
+        ttk.Button(
+            controls,
+            text="Open icons folder",
+            command=self._open_icons_folder,
+        ).pack(side="left", padx=(8, 0))
+
+    def _open_backup_folder(self) -> None:
+        directory = backup_directory()
+        try:
+            directory.mkdir(parents=True, exist_ok=True)
+            os.startfile(str(directory))
+        except OSError as error:
+            messagebox.showerror(
+                "Could not open backup folder",
+                f"Could not open {directory}:\n{error}",
+                parent=self.root,
+            )
+
     def _home_browse_backup(self) -> None:
-        self.tabs.select(self.backup_frame)
+        self.tabs.select(self.backup_transfer_frame)
+        self.backup_transfer_tabs.select(self.backup_frame)
         self.backup_browser._open_file()
 
     def _refresh_home_summary(self) -> None:
@@ -549,7 +749,11 @@ class HarmonyOfflineApp:
         self.device_cards.columnconfigure(1, weight=1)
         ttk.Label(
             self.device_tab,
-            text="Commands: local Remote Data only; remote configuration generation is still in development.",
+            text=(
+                "Commands edit local Remote Data. Change icon edits that device's "
+                "left-side Harmony menu-row icon in a separate backup candidate; load "
+                "the matching backup first. General Remote Data edits are not uploadable."
+            ),
             style="Harmony.Muted.TLabel",
             wraplength=800,
         ).grid(row=2, column=0, sticky="w", pady=(6, 0))
@@ -707,7 +911,11 @@ class HarmonyOfflineApp:
         self.activity_cards.columnconfigure(1, weight=1)
         ttk.Label(
             self.activity_tab,
-            text="These settings edit local Remote Data; they cannot currently be uploaded to the remote.",
+            text=(
+                "Activity settings edit local Remote Data. Change icon edits that activity's "
+                "left-side Harmony menu-row icon in a separate backup candidate; load the "
+                "matching backup first. General project edits are not uploadable."
+            ),
             style="Harmony.Muted.TLabel",
             wraplength=800,
         ).grid(row=2, column=0, sticky="w", pady=(6, 0))
@@ -902,7 +1110,7 @@ class HarmonyOfflineApp:
         controls = ttk.Frame(self.usb_tab)
         controls.pack(anchor="w")
         self.backup_button = ttk.Button(
-            controls, text="Back up connected Harmony One", command=self._start_backup
+            controls, text="Scan connected remote and save full backup", command=self._start_backup
         )
         self.backup_button.pack(side="left")
         ttk.Button(
@@ -941,37 +1149,76 @@ class HarmonyOfflineApp:
         self.usb_tree.pack(fill="both", expand=True)
 
     def _read_from_remote(self) -> None:
-        if self._backup_running or not self._confirm_discard():
+        if self._backup_running:
+            return
+        if not messagebox.askyesno(
+            "Check the connected remote",
+            "Connect the Harmony One by USB and confirm it is charged and ready. "
+            "The app will download and save a complete backup, then open a separate "
+            "Remote Data copy for editing. Nothing will be written to the remote.",
+            parent=self.root,
+        ):
+            return
+        if not self._confirm_discard():
             return
         self._start_backup(import_after=True)
 
-    def _preview_write(self) -> None:
-        if self.remote_project is None:
-            messagebox.showinfo(
-                "Read the remote first",
-                "Use 'Read from connected remote' first so the app knows what is on the "
-                "remote and can show exactly what would change.",
+    def _scan_and_export_icons(self) -> None:
+        if self._backup_running:
+            return
+        if not messagebox.askyesno(
+            "Check the connected remote",
+            "Connect the Harmony One by USB and confirm it is charged and ready. "
+            "The app will read and save a complete backup, then export its distinct "
+            "51 x 48 activity/device menu icons to your user icons folder. "
+            "Nothing will be written to the remote.",
+            parent=self.root,
+        ):
+            return
+        self._start_backup(archive_after=True, export_icons_after=True)
+
+    def _open_icons_folder(self) -> None:
+        directory = icon_library_directory()
+        try:
+            directory.mkdir(parents=True, exist_ok=True)
+            os.startfile(str(directory))
+        except OSError as error:
+            messagebox.showerror(
+                "Could not open icons folder",
+                f"Could not open {directory}:\n{error}",
                 parent=self.root,
             )
+
+    def _preview_write(self) -> None:
+        if self.remote_project is None:
+            self._open_restore_save()
             return
         plan = plan_changes(self.remote_project, self.project)
         rename_only = (
             len(plan.activities_renamed) == 1
-            and not any((
-                plan.devices_added, plan.devices_removed, plan.devices_renamed,
-                plan.devices_reordered, plan.device_fields_changed,
-                plan.activities_added, plan.activities_removed, plan.activities_reordered,
-                plan.activities_with_steps_changed, plan.activity_fields_changed,
-                plan.project_fields_changed,
-            ))
+            and not any(
+                (
+                    plan.devices_added,
+                    plan.devices_removed,
+                    plan.devices_renamed,
+                    plan.devices_reordered,
+                    plan.device_fields_changed,
+                    plan.activities_added,
+                    plan.activities_removed,
+                    plan.activities_reordered,
+                    plan.activities_with_steps_changed,
+                    plan.activity_fields_changed,
+                    plan.project_fields_changed,
+                )
+            )
         )
         if rename_only and self.remote_blob is not None:
             old, new = plan.activities_renamed[0]
             if not messagebox.askyesno(
                 "Prepare offline candidate",
                 f"Activity rename: {old} -> {new}\n\n"
-                "Prepare an offline configuration candidate for inspection? "
-                "This does not write to the remote. General Remote Data uploads remain blocked.",
+                "Prepare a local configuration candidate for inspection? "
+                "This does not write to the remote.",
                 parent=self.root,
             ):
                 return
@@ -980,7 +1227,8 @@ class HarmonyOfflineApp:
             except (ValueError, IndexError) as error:
                 messagebox.showwarning(
                     "Candidate could not be prepared",
-                    f"{error}\n\nRemote Data uploads remain blocked.", parent=self.root,
+                    str(error),
+                    parent=self.root,
                 )
                 return
             chosen = filedialog.asksaveasfilename(
@@ -1003,20 +1251,25 @@ class HarmonyOfflineApp:
                 "Offline candidate saved",
                 f"Saved {chosen}\n\nChanged {candidate.places_changed} text locations "
                 f"and {candidate.changed_bytes} bytes including the checksum. "
-                "This is an experimental candidate, not an upload-ready configuration; "
-                "no data was written to the remote.",
+                "This candidate is not upload-ready; no data was written to the remote.",
                 parent=self.root,
             )
             return
-        try:
-            write_project_to_remote(self.remote_blob, self.remote_backup_path, plan)
-        except WriteBlocked as blocked:
-            messagebox.showwarning(
-                "Write to remote",
-                "Changes that would be written:\n  " + "\n  ".join(plan.describe())
-                + "\n\nWriting is blocked:\n" + str(blocked),
-                parent=self.root,
-            )
+
+        self._open_restore_save()
+        self.save_restore.status.set(
+            "The selected local project changes cannot be included in a complete-save transfer. "
+            "The Transfer Remote workflow copies a raw .EZHex snapshot from one remote to "
+            "another; the current local JSON edits will not be included."
+        )
+
+    def _open_restore_save(self) -> None:
+        self.tabs.select(self.backup_transfer_frame)
+        self.backup_transfer_tabs.select(self.restore_save_frame)
+        self.save_restore.status.set(
+            "Download and save a connected remote, choose a saved .EZHex backup, or select an FQ preset. "
+            "Local Remote Data editor changes are not included."
+        )
 
     def _add_remote_activity(self) -> None:
         if self._backup_running or self.slideshow.writing:
@@ -1042,13 +1295,19 @@ class HarmonyOfflineApp:
         import_after: bool = False,
         export_after: bool = False,
         browse_after: bool = False,
+        archive_after: bool = False,
+        export_icons_after: bool = False,
     ) -> None:
         if self._backup_running:
             return
         self._import_after_backup = import_after
         self._export_after_backup = export_after
         self._browse_after_backup = browse_after
-        if import_after or export_after or browse_after:
+        self._export_icons_after_backup = export_icons_after
+        if archive_after:
+            stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+            destination = backup_directory() / f"HarmonyOne-{stamp}.EZHex"
+        elif import_after or export_after or browse_after:
             stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
             destination = backup_directory() / f"HarmonyOne-{stamp}.EZHex"
         else:
@@ -1066,6 +1325,7 @@ class HarmonyOfflineApp:
 
         self._backup_running = True
         self.backup_button.configure(state="disabled")
+        self.export_icons_button.configure(state="disabled")
         self.backup_progress.configure(value=0)
         self.backup_progress_text.set(
             f"Reading remote; validated backup will be saved to {destination}"
@@ -1106,6 +1366,15 @@ class HarmonyOfflineApp:
                 self._show_usb_backup_activity(percent if total else None)
             elif event == "complete":
                 destination, blob = payload
+                self.remote_blob = blob
+                self.remote_backup_path = destination
+                assistant = getattr(self, "remote_assistant", None)
+                if assistant is not None:
+                    assistant.load(blob, destination)
+                self._load_home_preview(blob)
+                if not self._import_after_backup and not self._browse_after_backup:
+                    self.slideshow.load(blob)
+                self.save_restore._refresh_saved_backups(destination)
                 size = len(blob)
                 self.backup_progress.configure(value=100)
                 self.backup_progress_text.set(
@@ -1114,14 +1383,43 @@ class HarmonyOfflineApp:
                 self.usb_status.set("Read-only Harmony One configuration backup completed.")
                 self._backup_running = False
                 self.backup_button.configure(state="normal")
+                self.export_icons_button.configure(state="normal")
                 self._clear_usb_backup_activity()
                 if self._import_after_backup:
                     self._load_remote_blob(blob, destination)
                 elif self._export_after_backup:
                     self._export_objects_from_blob(blob, destination.parent)
+                elif self._export_icons_after_backup:
+                    try:
+                        icons = export_remote_menu_icons(blob)
+                    except IconLibraryError as error:
+                        self.usb_status.set(
+                            f"Backup saved, but icon export failed: {error}"
+                        )
+                        messagebox.showerror(
+                            "Remote icon export failed",
+                            f"The validated backup was saved to:\n{destination}\n\n"
+                            f"{error}",
+                            parent=self.root,
+                        )
+                    else:
+                        self.usb_status.set(
+                            f"Exported {len(icons)} distinct menu icons to "
+                            f"{icon_library_directory()}."
+                        )
+                        messagebox.showinfo(
+                            "Remote icons exported",
+                            f"Exported {len(icons)} distinct menu icons to:\n"
+                            f"{icon_library_directory()}\n\n"
+                            f"Full remote backup:\n{destination}\n\n"
+                            "Add PNG/GIF files to the icons folder to make them "
+                            "available in the Change icon picker.",
+                            parent=self.root,
+                        )
                 elif self._browse_after_backup:
                     self.backup_browser.load(blob, destination)
-                    self.tabs.select(self.backup_frame)
+                    self.tabs.select(self.backup_transfer_frame)
+                    self.backup_transfer_tabs.select(self.backup_frame)
                 else:
                     messagebox.showinfo(
                         "Backup complete",
@@ -1131,6 +1429,7 @@ class HarmonyOfflineApp:
             elif event == "error":
                 self._backup_running = False
                 self.backup_button.configure(state="normal")
+                self.export_icons_button.configure(state="normal")
                 self.backup_progress_text.set("Backup operation ended with an error; see details.")
                 self.usb_status.set(f"Backup failed: {payload}")
                 self._clear_usb_backup_activity()
@@ -1281,12 +1580,29 @@ class HarmonyOfflineApp:
         self._save_project()
 
     def _close(self) -> None:
+        if hasattr(self, "save_restore") and self.save_restore.busy:
+            messagebox.showwarning(
+                "Remote operation in progress",
+                "Wait for the remote transfer to finish and keep USB connected.",
+                parent=self.root,
+            )
+            return
         if self.activity_upload_dialog is not None and self.activity_upload_dialog.busy:
             messagebox.showwarning(
                 "Remote operation in progress",
                 "Wait for the activity operation to finish and keep USB connected.",
                 parent=self.root,
             )
+            return
+        if (
+            hasattr(self, "backup_browser")
+            and self.backup_browser.edited_icon_candidate
+            and not messagebox.askyesno(
+                "Unsaved menu-icon edits",
+                "Discard the unsaved menu-icon backup candidate?",
+                parent=self.root,
+            )
+        ):
             return
         if self._confirm_discard():
             self.root.destroy()
@@ -1388,6 +1704,13 @@ class HarmonyOfflineApp:
             ).pack(side="left", padx=3, fill="x", expand=True)
             ttk.Button(
                 buttons,
+                text="Change icon",
+                command=lambda name=device["name"]: self._change_remote_menu_icon(
+                    "device", name
+                ),
+            ).pack(side="left", padx=3, fill="x", expand=True)
+            ttk.Button(
+                buttons,
                 text="Learn IR",
                 command=self._learn_ir_unavailable,
             ).pack(side="left", fill="x", expand=True)
@@ -1431,6 +1754,14 @@ class HarmonyOfflineApp:
             "Confirm that the device brand/model and imported IR codes are correct. "
             "This version does not run a live remote troubleshooting test.",
             parent=self.root,
+        )
+
+    def _change_remote_menu_icon(self, role: str, item_name: str) -> None:
+        self.backup_browser.edit_menu_icon_for_item(
+            role,
+            item_name,
+            apply_to_all_occurrences=role in ("device", "activity"),
+            fallback_to_role_occurrences=role == "activity",
         )
 
     def _learn_ir_unavailable(self) -> None:
@@ -1884,6 +2215,13 @@ class HarmonyOfflineApp:
                 buttons,
                 text="Troubleshoot",
                 command=lambda item=activity: self._activity_troubleshoot(item),
+            ).pack(side="left", padx=3, fill="x", expand=True)
+            ttk.Button(
+                buttons,
+                text="Change icon",
+                command=lambda name=activity["name"]: self._change_remote_menu_icon(
+                    "activity", name
+                ),
             ).pack(side="left", padx=3, fill="x", expand=True)
             ttk.Button(
                 buttons,
@@ -2506,29 +2844,39 @@ class HarmonyOfflineApp:
         self._mark_dirty()
         self._refresh_device_order()
         self.device_order_list.selection_set(target)
-    def _load_remote_blob(self, blob: bytes, backup_path: Path) -> None:
+    def _load_remote_blob(self, blob: bytes, backup_path: Path) -> bool:
         try:
             config = parse_config(blob)
         except ConfigError as error:
             messagebox.showerror("Could not read remote", str(error), parent=self.root)
-            return
+            return False
         project = project_from_remote(config, blob)
         self.remote_blob = blob
         self.remote_backup_path = backup_path
-        self.slideshow.load(blob)
+        self.clock.load(blob, backup_path)
+        self.screen_styles.load(blob, backup_path)
         self.backup_browser.load(blob, backup_path)
         self.remote_project = copy.deepcopy(project)
         self._replace_project(project, backup_path.with_suffix(".json"))
         self._mark_dirty()
         messagebox.showinfo(
-            "Remote read",
-            f"{len(config.device_labels)} devices and {config.activity_count} activities "
-            f"were read from the remote.\nA backup was saved to:\n{backup_path}\n\n"
-            "Device names, infrared records, activity names, and device state steps "
-            "were decoded. Per-button activity mappings and general Remote Data uploads "
-            "are still under development. Nothing was sent to the remote.",
+            "Backup copy ready to edit",
+            f"Imported {len(project['devices'])} decoded devices and "
+            f"{len(project['activities'])} decoded activities into a separate Remote Data "
+            f"copy:\n{self.project_path}\n\n"
+            f"The complete original backup remains at:\n{backup_path}\n\n"
+            "Save Remote Data to keep your project edits. This project is not an .EZHex "
+            "backup, and general device/activity edits cannot yet be compiled for upload. "
+            "The backup is unchanged; nothing was written to the remote.",
             parent=self.root,
         )
+        return True
+
+    def _start_editing_backup_copy(self, blob: bytes, backup_path: Path) -> None:
+        if not self._confirm_discard():
+            return
+        if self._load_remote_blob(blob, backup_path):
+            self.tabs.select(self.device_tab)
 
     def _import_remote_backup(self) -> None:
         if not self._confirm_discard():
@@ -2542,11 +2890,11 @@ class HarmonyOfflineApp:
         if not chosen:
             return
         try:
-            config = parse_config(Path(chosen).read_bytes())
-        except (OSError, ConfigError) as error:
+            blob = Path(chosen).read_bytes()
+        except OSError as error:
             messagebox.showerror("Could not read backup", str(error), parent=self.root)
             return
-        self._load_remote_blob(Path(chosen).read_bytes(), Path(chosen))
+        self._load_remote_blob(blob, Path(chosen))
 
     def _export_remote_objects(self) -> None:
         chosen = filedialog.askopenfilename(
@@ -2655,8 +3003,8 @@ class HarmonyOfflineApp:
             listing.selection_set(0, tk.END)
             return listing
 
-        device_list = build_list(0, "Devices", devices)
-        activity_list = build_list(1, "Activities", activities)
+        activity_list = build_list(0, "Activities", activities)
+        device_list = build_list(1, "Devices", devices)
         result: list[list[str] | None] = [None]
 
         def set_all(selected: bool) -> None:
@@ -2789,15 +3137,55 @@ class HarmonyOfflineApp:
 
 
 def run_self_test() -> int:
+    from zoneinfo import ZoneInfo, available_timezones
+    import struct
+
     project = bundled_project()
     features = load_feature_catalog(resource_path("data/features.json"))
+    styles = load_builtin_styles()
+    default_icons = sorted(
+        (Path(__file__).resolve().parent / "data" / "default_icons").glob("*.png")
+    )
+    if not default_icons or any(
+        not path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n") for path in default_icons
+    ):
+        raise RuntimeError("Bundled default menu icons are missing or invalid")
+    default_slides = sorted(
+        (Path(__file__).resolve().parent / "data" / "default_slideshow").glob("*.png")
+    )
+    if len(default_slides) != 4 or any(
+        not path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+        or struct.unpack_from(">II", path.read_bytes(), 16) != (176, 220)
+        for path in default_slides
+    ):
+        raise RuntimeError("Bundled default slideshow images are missing or invalid")
+    presets = []
+    for label, filename in FQ_PRESET_FILES.items():
+        path = resource_path(f"data/presets/{filename}")
+        config = validate_source_save(path.read_bytes(), label)
+        presets.append(f"{label} (architecture {config.architecture}, skin {config.skin})")
+    zones = available_timezones()
+    required_zones = ("America/Los_Angeles", "Asia/Tokyo", "Europe/London")
+    missing_zones = [zone for zone in required_zones if zone not in zones]
+    if missing_zones:
+        raise RuntimeError(f"Bundled IANA timezone data is missing {missing_zones}")
+    for zone in required_zones:
+        ZoneInfo(zone)
     device_count = len(project["devices"])
     signal_count = sum(len(device["commands"]) for device in project["devices"])
     print(f"Remote Data schema: v{project['formatVersion']}")
     print(f"Bundled library devices: {device_count}")
     print(f"Bundled parsed IR commands: {signal_count}")
     print(f"Tracked application features: {len(features)}")
-    print("USB writes: fixed-size edits verified; general Remote Data uploads still blocked")
+    print(f"Bundled display styles: {', '.join(style.name for style in styles.values())}")
+    print(f"Bundled default menu icons: {len(default_icons)}")
+    print(f"Bundled default slideshow images: {len(default_slides)}")
+    print(f"Bundled full-save presets: {', '.join(presets)}")
+    print(f"Bundled IANA timezone database: {len(zones)} zones; sample zones resolved")
+    print(
+        "USB writes: guarded display-style writes and clock updates are not hardware-validated; "
+        "general Remote Data uploads remain blocked"
+    )
     return 0
 
 

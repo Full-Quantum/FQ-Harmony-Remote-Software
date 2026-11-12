@@ -1,12 +1,17 @@
-"""Conservative, read-only decoding of a known Harmony One picture cycle."""
+"""Conservative decoding and fixed-size edits of known Harmony One picture cycles."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
+from harmony_one.config_image import validate_image
 from harmony_one.config_reader import ConfigError, parse_config, raw_slot_for_base_slot
 from harmony_one.key_bindings import locate_action_lists
 from harmony_one.pictures import Picture
+from harmony_one.slideshow import full_screen_pictures, refresh_checksum, replace_with_encoded
+
+DEFAULT_SLIDE_SECONDS = 3
+MAX_SLIDE_SECONDS = 0xFFFFFF
 
 
 class SlideshowCycleError(ValueError):
@@ -136,3 +141,118 @@ def read_picture_cycle(blob: bytes, pictures: list[tuple[int, Picture]]) -> list
         return _order_cycle(screens)
     except (ConfigError, KeyError) as error:
         raise SlideshowCycleError(f"Cannot decode picture cycle: {error}") from error
+
+
+def _edit_cycle_timers(
+    blob: bytes, durations: dict[int, int], transitions: dict[int, int] | None = None,
+) -> bytes:
+    """Patch isolated seven-byte cycle timers, never action lists or screen programs."""
+    transitions = transitions or {}
+    try:
+        validate_image(blob)
+        config = parse_config(blob)
+        cycle = read_picture_cycle(blob, full_screen_pictures(blob))
+        screens = {screen.mode: screen for screen in cycle}
+        if not (durations.keys() | transitions.keys()) <= screens.keys():
+            raise SlideshowCycleError("The requested screen is not in the current slideshow.")
+        if not set(transitions.values()) <= screens.keys():
+            raise SlideshowCycleError("A slideshow transition must stay inside the current cycle.")
+        for seconds in durations.values():
+            if type(seconds) is not int or not 1 <= seconds <= MAX_SLIDE_SECONDS:
+                raise SlideshowCycleError(
+                    f"Image time must be a whole number from 1 to {MAX_SLIDE_SECONDS} seconds."
+                )
+        start, _ = config.sections[raw_slot_for_base_slot(12)]
+        offsets = [
+            _u24(blob, start + 1 + index * 3) - config.base_address
+            for index in range(blob[start])
+        ]
+        header_end = 0x0B + 4 * len(config.pointers)
+        if any(not header_end <= offset <= len(blob) - 13 for offset in offsets):
+            raise SlideshowCycleError("A timer record points outside configuration content.")
+        actions = locate_action_lists(blob, config)
+        output = bytearray(blob)
+        for mode in durations.keys() | transitions.keys():
+            screen = screens[mode]
+            offset = offsets[screen.timer]
+            if any(
+                index != screen.timer and other < offset + 7 and offset < other + 7
+                for index, other in enumerate(offsets)
+            ):
+                raise SlideshowCycleError("A slideshow timer is shared or overlaps another timer.")
+            if sum(other.timer == screen.timer for other in cycle) != 1:
+                raise SlideshowCycleError("Slideshow screens share a timer; independent times are unsafe.")
+            references = sum(
+                instruction.opcode == 0x1F and instruction.operand == (0xEB00 | screen.timer)
+                for action in actions for instruction in action.instructions
+            )
+            if references != 1:
+                raise SlideshowCycleError("A slideshow timer is also referenced by another action.")
+            if (
+                blob[offset] != 1 or blob[offset + 6] != 0x7E
+                or _u24(blob, offset + 1) != screen.seconds
+                or int.from_bytes(blob[offset + 4:offset + 6], "little") != screen.next_mode
+            ):
+                raise SlideshowCycleError("The slideshow timer record has an unsupported layout.")
+            if mode in durations:
+                output[offset + 1:offset + 4] = durations[mode].to_bytes(3, "little")
+            if mode in transitions:
+                output[offset + 4:offset + 6] = transitions[mode].to_bytes(2, "little")
+        refresh_checksum(output)
+        candidate = bytes(output)
+        validate_image(candidate)
+        updated = read_picture_cycle(candidate, full_screen_pictures(candidate))
+        for screen in updated:
+            original = screens[screen.mode]
+            if (
+                screen.seconds != durations.get(screen.mode, original.seconds)
+                or screen.next_mode != transitions.get(screen.mode, original.next_mode)
+            ):
+                raise SlideshowCycleError("The slideshow timers did not match the requested changes.")
+        return candidate
+    except (ConfigError, KeyError) as error:
+        raise SlideshowCycleError(f"Cannot edit slideshow timers: {error}") from error
+
+
+def set_cycle_seconds(blob: bytes, slot: int, seconds: int) -> bytes:
+    """Set one playback slot's whole-second duration without changing any image."""
+    cycle = read_picture_cycle(blob, full_screen_pictures(blob))
+    if type(slot) is not int or not 0 <= slot < len(cycle):
+        raise SlideshowCycleError("This slot is not supported by the loaded slideshow.")
+    candidate = _edit_cycle_timers(blob, {cycle[slot].mode: seconds})
+    updated = read_picture_cycle(candidate, full_screen_pictures(candidate))
+    if [screen.mode for screen in updated] != [screen.mode for screen in cycle]:
+        raise SlideshowCycleError("Changing an image time unexpectedly changed playback order.")
+    return candidate
+
+
+def restore_default_cycle(blob: bytes, images: list[bytes]) -> bytes:
+    """Restore four default images/times, bypassing extra screens in a six-image cycle."""
+    cycle = read_picture_cycle(blob, full_screen_pictures(blob))
+    if len(cycle) not in (4, 6) or len(images) != 4:
+        raise SlideshowCycleError("Restoring defaults requires a recognized four- or six-image cycle.")
+    if len({screen.picture.offset for screen in cycle}) != len(cycle):
+        raise SlideshowCycleError("Cycle screens share a picture; default images cannot be independent.")
+    # Keep the terminal screen's existing final action; only bypass the two extra timers.
+    retained = cycle[:3] + [cycle[-1]]
+    candidate = _edit_cycle_timers(
+        blob, {screen.mode: DEFAULT_SLIDE_SECONDS for screen in retained},
+        {screen.mode: retained[(index + 1) % 4].mode for index, screen in enumerate(retained)},
+    )
+    for screen, image in zip(retained, images):
+        if (
+            len(image) != screen.picture.size
+            or image[:5] != b"\x00\xb0\x00\xdc\x00"
+        ):
+            raise SlideshowCycleError("Default slideshow images must be raw 176 x 220 pictures.")
+        candidate = replace_with_encoded(candidate, screen.picture, image)
+    validate_image(candidate)
+    updated = read_picture_cycle(candidate, full_screen_pictures(candidate))
+    if (
+        [screen.mode for screen in updated] != [screen.mode for screen in retained]
+        or [screen.seconds for screen in updated] != [DEFAULT_SLIDE_SECONDS] * 4
+        or any(candidate[screen.picture.offset:screen.picture.end] != image
+               for screen, image in zip(updated, images))
+    ):
+        raise SlideshowCycleError("The restored slideshow did not match the four-image default.")
+    return candidate

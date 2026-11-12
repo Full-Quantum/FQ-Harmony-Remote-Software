@@ -51,7 +51,7 @@ class PlanTests(unittest.TestCase):
         with self.assertRaises(WriteBlocked) as raised:
             write_project_to_remote(None, None, plan)
         self.assertIn("backup", str(raised.exception))
-        self.assertIn("encoder and relocation", str(raised.exception))
+        self.assertIn("Transfer Remote tab", str(raised.exception))
 
     def test_plan_covers_device_and_activity_fields(self):
         edited = copy.deepcopy(self.remote)

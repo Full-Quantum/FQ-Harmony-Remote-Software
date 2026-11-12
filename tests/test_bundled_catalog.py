@@ -17,6 +17,7 @@ class BundledCatalogTests(unittest.TestCase):
         by_id = {feature["id"]: feature for feature in features}
         self.assertEqual(by_id["remote-object-export"]["level"], "Partially functional")
         self.assertEqual(by_id["harmony-one-backup"]["level"], "Read-only")
+        self.assertEqual(by_id["clock-sync"]["level"], "Partially functional")
         self.assertEqual(by_id["remote-programming"]["level"], "Partially functional")
         self.assertEqual(by_id["remote-config-generation"]["level"], "Not implemented")
 

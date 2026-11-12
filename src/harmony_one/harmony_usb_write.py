@@ -1,4 +1,4 @@
-"""USB HID transport for the flash writer. Only used by the rehearsal tool, never by the GUI."""
+"""USB HID transport shared by the GUI's guarded writers and the rehearsal tool."""
 
 from __future__ import annotations
 

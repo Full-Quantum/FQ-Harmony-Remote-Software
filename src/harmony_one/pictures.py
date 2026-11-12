@@ -145,8 +145,41 @@ def decode_picture(data: bytes, picture: Picture) -> list[list[tuple[int, int, i
     return rows
 
 
-def write_png(path, pixels: list[list[tuple[int, int, int, int] | None]]) -> None:
-    """Write RGBA pixels as a PNG without third-party libraries."""
+def encode_rle_picture(pixels: list[list[int | None]]) -> bytes:
+    """Encode RGB565 values with transparent pixels as a kind 1 picture."""
+    height = len(pixels)
+    width = len(pixels[0]) if height else 0
+    if not 1 <= width <= PICTURE_CEILING or not 1 <= height <= PICTURE_CEILING:
+        raise PictureError("Picture dimensions must be between 1 and 256 pixels.")
+    if any(len(row) != width for row in pixels):
+        raise PictureError("Picture rows must all have the same width.")
+    body = bytearray((1,))
+    body.extend(struct.pack("<HH", width, height))
+    for row_index, row in enumerate(pixels):
+        position = 0
+        while position < width:
+            transparent = row[position] is None
+            end = position + 1
+            while end < width and (row[end] is None) == transparent and end - position < 127:
+                end += 1
+            run = end - position
+            if transparent:
+                body.append(0x80 | run)
+            else:
+                body.append(run)
+                for pixel in row[position:end]:
+                    if pixel is None or not 0 <= pixel <= 0xFFFF:
+                        raise PictureError("Picture pixels must be RGB565 values or transparent.")
+                    body.extend(pixel.to_bytes(2, "big"))
+            position = end
+        if row_index < height - 1:
+            body.append(0x80)
+    body.append(0)
+    return bytes(body)
+
+
+def encode_png(pixels: list[list[tuple[int, int, int, int] | None]]) -> bytes:
+    """Encode RGBA pixels as PNG bytes without third-party libraries."""
     height = len(pixels)
     width = len(pixels[0]) if height else 0
     raw = bytearray()
@@ -163,5 +196,10 @@ def write_png(path, pixels: list[list[tuple[int, int, int, int] | None]]) -> Non
     png += chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0))
     png += chunk(b"IDAT", zlib.compress(bytes(raw), 9))
     png += chunk(b"IEND", b"")
+    return png
+
+
+def write_png(path, pixels: list[list[tuple[int, int, int, int] | None]]) -> None:
+    """Write RGBA pixels as a PNG without third-party libraries."""
     with open(path, "wb") as handle:
-        handle.write(png)
+        handle.write(encode_png(pixels))

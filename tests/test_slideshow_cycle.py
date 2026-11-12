@@ -58,6 +58,12 @@ class CycleTests(unittest.TestCase):
         self.assertEqual([screen.picture_index for screen in cycle], [0, 2, 1])
         self.assertEqual([screen.seconds for screen in cycle], [5, 5, 5])
 
+    def test_six_image_cycle_is_read_in_playback_order(self):
+        args = fixture((2, 4, 1, 0, 5, 3), (3,))
+        cycle = self.decode(*args)
+        self.assertEqual([screen.picture_index for screen in cycle], [0, 2, 1, 4, 5, 3])
+        self.assertEqual([screen.seconds for screen in cycle], [5] * 6)
+
     def test_ambiguous_cycles_are_refused(self):
         args = fixture((1, 0, 3, 2), (1, 3))
         with self.assertRaises(SlideshowCycleError):

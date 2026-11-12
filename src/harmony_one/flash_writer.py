@@ -3,9 +3,9 @@
 Protocol facts come from the MIT-licensed public reference at
 github.com/dannybloe/harmony-explorations (reference/usb-protocol/commands.md); no
 third-party code is used. ``FlashWriter`` talks to an abstract ``WriteTransport`` so the
-sequence can be tested against simulated flash. The slideshow UI and the explicit
-rehearsal tool use this writer; general project writes remain blocked until a
-project-to-container encoder is verified.
+sequence can be tested against simulated flash. The slideshow, clock, display-style,
+activity, and complete-save workflows use this writer; general project writes remain
+blocked until a project-to-container encoder is verified.
 
 Wire summary (reports are 64 bytes, first byte = command | length nibble):
   reset escape       0xE1 <sub>              (0x02 restarts the remote)
@@ -21,6 +21,8 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 from typing import Callable, Protocol
+
+from harmony_one.harmony_usb import CONFIG_FLASH_LIMIT
 
 REPORT_SIZE = 64
 ERASE_BLOCK = 0x10000
@@ -116,6 +118,8 @@ def plan_write(new_config: bytes, read_flash: Callable[[int, int], bytes]) -> Wr
         raise WriteError("refusing to write an empty configuration")
     block_count = -(-len(new_config) // ERASE_BLOCK)
     total = block_count * ERASE_BLOCK
+    if CONFIG_BASE + total > CONFIG_FLASH_LIMIT:
+        raise WriteError("configuration and preserved tail exceed Harmony One flash capacity")
     tail_length = total - len(new_config)
     tail = read_flash(CONFIG_BASE + len(new_config), tail_length) if tail_length else b""
     if len(tail) != tail_length:

@@ -93,6 +93,17 @@ def icon_pixels(icon: dict[str, Any]) -> bytes:
 
 
 def import_icon(path: Path, master: tk.Misc) -> dict[str, str]:
+    pixels = import_rgba_image(path, master, (ICON_SIZE, ICON_SIZE))
+    return {"kind": "custom", "rgba": base64.b64encode(pixels).decode("ascii")}
+
+
+def import_rgba_image(
+    path: Path, master: tk.Misc, size: tuple[int, int]
+) -> bytes:
+    """Import a bounded PNG/GIF and fit its first frame into a transparent RGBA canvas."""
+    target_width, target_height = size
+    if not 1 <= target_width <= 256 or not 1 <= target_height <= 256:
+        raise IconError("Output dimensions must be between 1 and 256 pixels.")
     try:
         with path.open("rb") as file:
             data = file.read(MAX_FILE_BYTES + 1)
@@ -117,12 +128,12 @@ def import_icon(path: Path, master: tk.Misc) -> dict[str, str]:
     if (image.width(), image.height()) != (width, height):
         raise IconError("Image dimensions do not match its header.")
 
-    scale = min(ICON_SIZE / width, ICON_SIZE / height)
+    scale = min(target_width / width, target_height / height)
     scaled_width = max(1, round(width * scale))
     scaled_height = max(1, round(height * scale))
-    left = (ICON_SIZE - scaled_width) // 2
-    top = (ICON_SIZE - scaled_height) // 2
-    pixels = bytearray(ICON_SIZE * ICON_SIZE * 4)
+    left = (target_width - scaled_width) // 2
+    top = (target_height - scaled_height) // 2
+    pixels = bytearray(target_width * target_height * 4)
     for y in range(scaled_height):
         source_y = min(height - 1, y * height // scaled_height)
         for x in range(scaled_width):
@@ -130,9 +141,9 @@ def import_icon(path: Path, master: tk.Misc) -> dict[str, str]:
             if image.transparency_get(source_x, source_y):
                 continue
             rgb = image.get(source_x, source_y)
-            offset = ((top + y) * ICON_SIZE + left + x) * 4
+            offset = ((top + y) * target_width + left + x) * 4
             pixels[offset:offset + 4] = bytes((*rgb, 255))
-    return {"kind": "custom", "rgba": base64.b64encode(pixels).decode("ascii")}
+    return bytes(pixels)
 
 
 def make_preview(master: tk.Misc, icon: dict[str, Any]) -> tk.PhotoImage:

@@ -174,8 +174,8 @@ def write_project_to_remote(
 ) -> None:
     problems = check_gates(blob, backup_path, plan)
     problems.append(
-        "Remote Data uploads are disabled: the device/activity encoder and relocation "
-        "are not implemented and verified. USB writes were tested only for separate "
-        "fixed-size edits on the spare remote."
+        "Local Remote Data editor changes cannot be uploaded as a complete remote save. "
+        "To transfer a complete raw .EZHex snapshot between remotes, use the Transfer "
+        "Remote tab; it does not merge or include local editor changes."
     )
     raise WriteBlocked("\n".join(problems))
